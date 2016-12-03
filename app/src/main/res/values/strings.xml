@@ -12,5 +12,7 @@
     <string name="error_invalid_password">The password is required</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">The username is required</string>
+    <string name="error_invalid_server_host">The server host is required</string>
+    <string name="error_invalid_server_port">The server port is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
 </resources>

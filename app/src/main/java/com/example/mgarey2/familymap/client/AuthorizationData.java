@@ -14,4 +14,10 @@ public class AuthorizationData {
         this.personId = personId;
         this.username = username;
     }
+
+    public String toString() {
+        return "Authorization token: " + authroizationToken +
+                "\nPerson ID: " + personId +
+                "\nUsername: " + username + "\n";
+    }
 }

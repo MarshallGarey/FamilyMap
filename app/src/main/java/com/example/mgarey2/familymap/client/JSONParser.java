@@ -27,7 +27,7 @@ public class JSONParser {
             String personId = jsonObject.getString("personId");
             return new AuthorizationData(authorizationToken, personId, username);
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.toString());
+            Log.e(LOG_TAG, e.toString(), e);
         }
         return null;
     }

@@ -3,6 +3,7 @@ package com.example.mgarey2.familymap.main;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -29,6 +30,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.client.AuthorizationData;
@@ -45,21 +47,11 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+    private static Context context = null;
+    private final int REQUEST_READ_CONTACTS = 1;
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
@@ -73,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = this;
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
@@ -105,34 +98,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
     }
 
     private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
         getLoaderManager().initLoader(0, null, this);
     }
 
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mUsernameView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
 
     /**
      * Callback received when a permissions request has been completed.
@@ -147,10 +115,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         }
     }
 
-
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
+     * Attempts to sign in to the account specified by the login form.
+     * If there are form errors (invalid or missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
@@ -185,6 +152,14 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
             cancel = true;
+        }
+
+        if (TextUtils.isEmpty(serverHost)) {
+            mServerHostView.setError(getString(R.string.error_invalid_server_host));
+        }
+
+        if (TextUtils.isEmpty(serverPort)) {
+            mServerHostView.setError(getString(R.string.error_invalid_server_port));
         }
 
         if (cancel) {
@@ -255,14 +230,14 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
+        List<String> usernames = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
+            usernames.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
 
-        addEmailsToAutoComplete(emails);
+        addUsernameToAutoComplete(usernames);
     }
 
     @Override
@@ -270,11 +245,11 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
     }
 
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
+    private void addUsernameToAutoComplete(List<String> usernameCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(MainActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
+                        android.R.layout.simple_dropdown_item_1line, usernameCollection);
 
         mUsernameView.setAdapter(adapter);
     }
@@ -288,6 +263,10 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
+    }
+
+    public static void newToast(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -310,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            // Attempt authentication against network service.
             boolean success = Client.login(mEmail, mPassword);
             if (!success) {
                 // login failed
@@ -318,29 +297,10 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
                 return false;
             }
             else {
-                // login succeeded.
-                // TODO: Create map fragment.
+                // Login succeeded.
                 Log.w("Main Activity", "Login successful");
                 return false;
             }
-
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
-//
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
-
-//            // TODO: register the new account here.
-//            return true;
         }
 
         @Override
@@ -349,8 +309,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
             showProgress(false);
 
             if (success) {
-                finish();
+                // TODO: Create map fragment
             } else {
+                MainActivity.newToast("Login failed");
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }

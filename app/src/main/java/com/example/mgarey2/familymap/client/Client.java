@@ -17,6 +17,7 @@ public class Client {
     private static URL url = null;
     private static String urlString = null;
     private static AuthorizationData authorizationData = null;
+    private static final String LOG_TAG = "HttpClient";
 
     public static void openUrl(String destUrl) {
         try {
@@ -25,7 +26,7 @@ public class Client {
             // TODO: don't hard code. This is just for testing.
 //            url = new URL("http://bernoulli.app.byu.edu:8080");
         } catch (Exception e) {
-            Log.e("HttpClient", "Error connecting to server.\n" + e.getMessage(), e);
+            Log.e(LOG_TAG, "Error connecting to server.\n" + e.getMessage(), e);
         }
     }
 
@@ -56,8 +57,9 @@ public class Client {
             writer.close();
 
             // Get the response
-            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                Log.w("HttpClient", "We are connected. Now we can try to log in.\n");
+            int responseCode = httpURLConnection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                Log.w(LOG_TAG, "We are connected. Now we can try to log in.\n");
 
                 // Get response body input stream
                 InputStream responseBody = httpURLConnection.getInputStream();
@@ -73,10 +75,15 @@ public class Client {
 
                 // Convert response body bytes to a string, parse it, and return.
                 authorizationData = JSONParser.parseLoginResponse(baos.toString());
-                return (authorizationData != null);
+                if (authorizationData != null) {
+                    Log.w(LOG_TAG, authorizationData.toString());
+                    return true;
+                }
+                return false;
+//                return (authorizationData != null);
             }
             else {
-                Log.w("HttpClient", "We are not connected.\n");
+                Log.w(LOG_TAG, "We are not connected; response code = " + responseCode + "\n");
             }
 
 //            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
@@ -96,7 +103,7 @@ public class Client {
 //            }
 
         } catch (Exception e) {
-            Log.e("HttpClient", "Error logging in.\n" + e.getMessage(), e);
+            Log.e(LOG_TAG, "Error logging in.\n" + e.getMessage(), e);
         }
         return false;
     }
