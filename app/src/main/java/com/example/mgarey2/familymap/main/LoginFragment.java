@@ -128,8 +128,7 @@ public class LoginFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(View view);
+        void onSuccessfulLogin();
     }
 
     /**
@@ -268,8 +267,10 @@ public class LoginFragment extends Fragment {
             showProgress(false);
 
             if (success) {
-                // TODO: Signal Main activity to switch to map fragment
+                // Signal Main activity to switch to map fragment
                 MainActivity.newToast("Login and synchronization successful.");
+                mListener.onSuccessfulLogin();
+
             } else {
                 MainActivity.newToast("Login failed");
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
