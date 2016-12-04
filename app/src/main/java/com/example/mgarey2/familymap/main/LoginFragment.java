@@ -268,8 +268,8 @@ public class LoginFragment extends Fragment {
             showProgress(false);
 
             if (success) {
-                // TODO: Create map fragment
-                MainActivity.newToast("Login successful.");
+                // TODO: Signal Main activity to switch to map fragment
+                MainActivity.newToast("Login and synchronization successful.");
             } else {
                 MainActivity.newToast("Login failed");
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

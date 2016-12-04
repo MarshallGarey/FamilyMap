@@ -1,13 +1,18 @@
 package com.example.mgarey2.familymap.model;
 
+import android.util.Log;
+
+import com.example.mgarey2.familymap.main.LoginFragment;
+
 /**
  * Created by Marshall on 12/2/2016.
- * * Storage for information about a person.
+ * Information about a person.
  */
 public class Person {
 
-    // Required data:
+    private final String LOG_TAG = "Person";
 
+    // Required data:
     private String descendant;
     private String personId;
     private String firstName;
@@ -19,5 +24,25 @@ public class Person {
     private String father;
     private String mother;
 
+    public Person(String descendant, String personID, String firstName, String lastName, String gender, String
+            spouse, String father, String mother) {
+        this.descendant = descendant;
+        this.personId = personID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.spouse = spouse;
+        this.father = father;
+        this.mother = mother;
+//        Log.d(LOG_TAG, toString());
+    }
 
+    public String toString() {
+        return ("Descendant: " + descendant +
+        "\nPersonID: " + personId +
+        "\nName: " + firstName + " " + lastName +
+        "\nGender: " + gender +
+        "\nSpouse: " + spouse +
+        "\nFather: " + father + " , Mother: " + mother + "\n");
+    }
 }
