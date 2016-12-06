@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.amazon.geo.mapsv2.AmazonMap;
+import com.amazon.geo.mapsv2.OnMapReadyCallback;
 import com.example.mgarey2.familymap.R;
 
 /**
@@ -16,13 +18,14 @@ public class MainActivity
         implements LoginFragment.OnFragmentInteractionListener,
         MapFragment.OnFragmentInteractionListener {
 
-    private final String TAG = "Main Activity";
+    private final String LOG_TAG = "Main Activity";
     private static Context context = null;
+    private MapFragment mapFragment = null;
     // TODO (maybe): create a private field that stores the state of the main activity - map or login
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
+        Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_main);
@@ -38,25 +41,25 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
+        Log.d(LOG_TAG, "onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause");
+        Log.d(LOG_TAG, "onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop");
+        Log.d(LOG_TAG, "onStop");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d(TAG, "onRestart");
+        Log.d(LOG_TAG, "onRestart");
     }
 
     /**
@@ -71,12 +74,12 @@ public class MainActivity
 
     @Override
     public void onMapInteraction() {
-        Log.d(TAG, "Map Fragment callback");
+        Log.d(LOG_TAG, "Map Fragment callback");
     }
 
     private void loadLoginFragment() {
         // Create Login Fragment
-        Log.d(TAG, "Load Login Fragment");
+        Log.d(LOG_TAG, "Load Login Fragment");
         LoginFragment loginFragment = LoginFragment.newInstance();
 
         // Add login fragment to the main_activity_container frame layout
@@ -90,11 +93,13 @@ public class MainActivity
     }
 
     private void loadMapFragment() {
-        Log.d(TAG, "Load Map Fragment");
+        Log.d(LOG_TAG, "Load Map Fragment");
         // TODO: use the parameters to signify whether to zoom in or out
         MapFragment mapFragment = MapFragment.newInstance(null, null);
         getSupportFragmentManager().beginTransaction().add(
                 R.id.fragment_container, mapFragment).commit();
+        this.mapFragment = mapFragment;
+
     }
 
     // TODO: don't make this method static
