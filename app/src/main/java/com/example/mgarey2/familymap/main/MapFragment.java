@@ -18,7 +18,10 @@ import com.amazon.geo.mapsv2.OnMapReadyCallback;
 import com.amazon.geo.mapsv2.model.LatLng;
 import com.amazon.geo.mapsv2.model.MarkerOptions;
 import com.example.mgarey2.familymap.R;
+import com.example.mgarey2.familymap.model.Event;
+import com.example.mgarey2.familymap.model.LocalData;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -68,7 +71,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         return fragment;
     }
-
 
 
     @Override
@@ -125,7 +127,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(AmazonMap amazonMap) {
+        // TODO: Draw markers; get data from local cache
+        ArrayList<Event> events = LocalData.getEvents();
+        for (Event event : events) {
+            LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());
+            amazonMap.addMarker(newMarker(location));
+        }
+    }
 
+    private MarkerOptions newMarker(LatLng location) {
+        return new MarkerOptions().position(location);
     }
 
     /**

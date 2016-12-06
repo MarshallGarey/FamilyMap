@@ -38,4 +38,12 @@ public class LocalData {
         }
         events.remove(event);
     }
+
+    public static ArrayList<Person> getPeople() {
+        return people;
+    }
+
+    public static ArrayList<Event> getEvents() {
+        return events;
+    }
 }

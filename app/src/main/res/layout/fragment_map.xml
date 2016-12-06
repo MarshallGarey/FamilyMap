@@ -5,9 +5,9 @@
              tools:context="com.example.mgarey2.familymap.main.MapFragment">
 
     <com.amazon.geo.mapsv2.MapView
+        android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map">
+        android:layout_height="match_parent">
     </com.amazon.geo.mapsv2.MapView>
 
 </FrameLayout>

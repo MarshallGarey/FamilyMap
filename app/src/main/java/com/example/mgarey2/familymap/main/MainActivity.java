@@ -99,7 +99,6 @@ public class MainActivity
         getSupportFragmentManager().beginTransaction().add(
                 R.id.fragment_container, mapFragment).commit();
         this.mapFragment = mapFragment;
-
     }
 
     // TODO: don't make this method static

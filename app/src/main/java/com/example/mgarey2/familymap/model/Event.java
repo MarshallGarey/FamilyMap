@@ -44,4 +44,40 @@ public class Event {
                 ", descendant='" + descendant + '\'' +
                 '}';
     }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitutde() {
+        return longitutde;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public String getDescendant() {
+        return descendant;
+    }
 }
