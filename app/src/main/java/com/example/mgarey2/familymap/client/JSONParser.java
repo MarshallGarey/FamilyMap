@@ -2,7 +2,6 @@ package com.example.mgarey2.familymap.client;
 
 import android.util.Log;
 
-import com.example.mgarey2.familymap.main.LoginFragment;
 import com.example.mgarey2.familymap.model.Event;
 import com.example.mgarey2.familymap.model.LocalData;
 import com.example.mgarey2.familymap.model.Person;

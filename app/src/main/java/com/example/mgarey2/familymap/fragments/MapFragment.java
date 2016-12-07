@@ -1,8 +1,6 @@
-package com.example.mgarey2.familymap.main;
+package com.example.mgarey2.familymap.fragments;
 
 import android.content.Context;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 
 import com.amazon.geo.mapsv2.AmazonMap;
 import com.amazon.geo.mapsv2.AmazonMapOptions;
-import com.amazon.geo.mapsv2.CameraUpdateFactory;
 import com.amazon.geo.mapsv2.MapView;
 import com.amazon.geo.mapsv2.OnMapReadyCallback;
 import com.amazon.geo.mapsv2.model.LatLng;
@@ -25,9 +22,7 @@ import com.example.mgarey2.familymap.model.Event;
 import com.example.mgarey2.familymap.model.LocalData;
 import com.example.mgarey2.familymap.model.Person;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.

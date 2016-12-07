@@ -60,7 +60,7 @@ public class Event {
         }
         String result = "\t\t" + name + "\n\t\t" +
                 description + ": " + city + ", " + country +
-                "(" + year + ")";
+                " (" + year + ")";
         Log.d(LOG_TAG, result);
         return result;
     }

@@ -1,4 +1,4 @@
-package com.example.mgarey2.familymap.main;
+package com.example.mgarey2.familymap.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.amazon.geo.mapsv2.AmazonMap;
-import com.amazon.geo.mapsv2.OnMapReadyCallback;
 import com.example.mgarey2.familymap.R;
+import com.example.mgarey2.familymap.fragments.LoginFragment;
+import com.example.mgarey2.familymap.fragments.MapFragment;
 
 /**
  * Created by Marshall

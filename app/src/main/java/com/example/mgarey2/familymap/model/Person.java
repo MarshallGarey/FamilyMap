@@ -1,9 +1,5 @@
 package com.example.mgarey2.familymap.model;
 
-import android.util.Log;
-
-import com.example.mgarey2.familymap.main.LoginFragment;
-
 /**
  * Created by Marshall on 12/2/2016.
  * Information about a person.
