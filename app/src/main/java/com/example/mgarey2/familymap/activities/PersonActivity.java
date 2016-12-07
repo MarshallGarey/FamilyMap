@@ -1,12 +1,8 @@
 package com.example.mgarey2.familymap.activities;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.model.Person;
@@ -21,10 +17,26 @@ public class PersonActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        // Get Person
         person = (Person) getIntent().getSerializableExtra("Person");
         Log.d(LOG_TAG, person.toString());
+
     }
 
+    @Override
+    protected void onResume() {
+        Log.d(LOG_TAG, "onResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }
