@@ -1,11 +1,17 @@
 package com.example.mgarey2.familymap.model;
 
+import android.util.Log;
+
+import java.security.interfaces.DSAKey;
+
 /**
  * Created by Marshall on 12/2/2016.
  * Information about an event in a person's life.
  * All data in JSON is required - there are no optional fields.
  */
 public class Event {
+
+    private final String LOG_TAG = "Event";
 
     private String eventId;
     private String personId;
@@ -32,17 +38,31 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event{" +
-                "eventId='" + eventId + '\'' +
-                ", personId='" + personId + '\'' +
-                ", latitude=" + latitude +
+        return description + ": " +
+                "\npersonId=" + personId +
+                "\neventId=" + eventId +
+                "\nlatitude=" + latitude +
                 ", longitutde=" + longitutde +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                ", description='" + description + '\'' +
-                ", year='" + year + '\'' +
-                ", descendant='" + descendant + '\'' +
-                '}';
+                "\ncountry=" + country +
+                ", city=" + city +
+                "\nyear=" + year +
+                ", descendant='" + descendant;
+    }
+
+    public String getEventSummary() {
+        String name = null;
+        Person person = LocalData.findPerson(personId);
+        if (person == null) {
+            Log.w(LOG_TAG, "Unable to find person in getEventSummary");
+        }
+        else {
+            name = person.getName();
+        }
+        String result = "\t\t" + name + "\n\t\t" +
+                description + ": " + city + ", " + country +
+                "(" + year + ")";
+        Log.d(LOG_TAG, result);
+        return result;
     }
 
     public String getEventId() {

@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amazon.geo.mapsv2.AmazonMap;
 import com.amazon.geo.mapsv2.AmazonMapOptions;
@@ -16,12 +18,15 @@ import com.amazon.geo.mapsv2.CameraUpdateFactory;
 import com.amazon.geo.mapsv2.MapView;
 import com.amazon.geo.mapsv2.OnMapReadyCallback;
 import com.amazon.geo.mapsv2.model.LatLng;
+import com.amazon.geo.mapsv2.model.Marker;
 import com.amazon.geo.mapsv2.model.MarkerOptions;
 import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.model.Event;
 import com.example.mgarey2.familymap.model.LocalData;
+import com.example.mgarey2.familymap.model.Person;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -32,7 +37,7 @@ import java.util.Map;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonMap.OnMarkerClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,6 +51,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private OnFragmentInteractionListener mListener;
     private MapView mapView;
+    private TextView textView;
+    private ImageView genderIconView;
     protected static AmazonMap amazonMap = null;
 
     public MapFragment() {
@@ -81,11 +88,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        // Satellite view by default
-//        amazonMapOptions = new AmazonMapOptions();
-//        amazonMapOptions.mapType(AmazonMap.MAP_TYPE_SATELLITE);
-
     }
 
     @Override
@@ -93,12 +95,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
+
         // Create the map view.
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
+
+        // Event description view.
+        textView = (TextView) view.findViewById(R.id.eventDescription);
+        setEventText("Event Description");
+
+        // Gender icon view.
+        genderIconView = (ImageView) view.findViewById(R.id.genderIcon);
+
         return view;
+    }
+
+    private void setEventText(String text) {
+        Log.d(LOG_TAG, "setEventText");
+        textView.setText(text);
+        textView.setTextSize(18.0F);
+    }
+
+    private void setGenderIcon(String gender) {
+        if (gender.toLowerCase().equals("m")) {
+            genderIconView.setImageResource(R.drawable.blue_male_icon);
+        }
+        else {
+            genderIconView.setImageResource(R.drawable.pink_female_icon);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -127,16 +153,43 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(AmazonMap amazonMap) {
-        // TODO: Draw markers; get data from local cache
-        ArrayList<Event> events = LocalData.getEvents();
+
+        // TODO: Apply filters
+        // TODO: Apply stored settings
+
+        // Set callback for clicking on markers.
+        amazonMap.setOnMarkerClickListener(this);
+
+        // Draw markers; get data from local cache
+        HashSet<Event> events = LocalData.getEvents();
         for (Event event : events) {
             LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());
-            amazonMap.addMarker(newMarker(location));
+            amazonMap.addMarker(newMarker(location, event.getEventId(), event.getEventSummary()));
         }
     }
 
-    private MarkerOptions newMarker(LatLng location) {
-        return new MarkerOptions().position(location);
+    private MarkerOptions newMarker(LatLng location, String eventId, String summary) {
+        MarkerOptions markerOptions = new MarkerOptions().position(location);
+        markerOptions.title(eventId); // Do this so it's easy to find the event later.
+        markerOptions.snippet(summary);
+
+        return markerOptions;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Log.d(LOG_TAG, "onMarkerClick");
+        setEventText(marker.getSnippet());
+        Event event = LocalData.findEvent(marker.getTitle());
+        if (event == null) {
+            return false;
+        }
+        Person person = LocalData.findPerson(event.getPersonId());
+        if (person == null) {
+            return false;
+        }
+        setGenderIcon(person.getGender());
+        return true;
     }
 
     /**

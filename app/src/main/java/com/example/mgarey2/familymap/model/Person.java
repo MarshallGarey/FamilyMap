@@ -45,4 +45,40 @@ public class Person {
         "\nSpouse: " + spouse +
         "\nFather: " + father + " , Mother: " + mother + "\n");
     }
+
+    public String getDescendant() {
+        return descendant;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getName() {
+        return firstName + " " + lastName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getSpouse() {
+        return spouse;
+    }
+
+    public String getFather() {
+        return father;
+    }
+
+    public String getMother() {
+        return mother;
+    }
 }

@@ -1,6 +1,9 @@
 package com.example.mgarey2.familymap.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by Marshall on 12/3/2016.
@@ -8,8 +11,9 @@ import java.util.ArrayList;
  */
 public class LocalData {
 
+    private final static String LOG_TAG = "LocalData";
     protected static ArrayList<Person> people;
-    protected static ArrayList<Event> events;
+    protected static HashSet<Event> events;
 
     public static void addPerson(Person person) {
         if (people == null) {
@@ -27,7 +31,7 @@ public class LocalData {
 
     public static void addEvent(Event event) {
         if (events == null) {
-            events = new ArrayList<>();
+            events = new HashSet<>();
         }
         events.add(event);
     }
@@ -43,7 +47,27 @@ public class LocalData {
         return people;
     }
 
-    public static ArrayList<Event> getEvents() {
+    public static HashSet<Event> getEvents() {
         return events;
+    }
+
+    public static Person findPerson(String personId) {
+        for (Person person : people) {
+            if (person.getPersonId().equals(personId)) {
+                return person;
+            }
+        }
+        Log.w(LOG_TAG, "Unable to find person with id " + personId);
+        return null;
+    }
+
+    public static Event findEvent(String eventId) {
+        for (Event event : events) {
+            if (event.getEventId().equals(eventId)) {
+                return event;
+            }
+        }
+        Log.w(LOG_TAG, "Unable to find event with id " + eventId);
+        return null;
     }
 }
