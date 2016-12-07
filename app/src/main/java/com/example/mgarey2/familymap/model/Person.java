@@ -1,5 +1,7 @@
 package com.example.mgarey2.familymap.model;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
 /**
@@ -16,11 +18,11 @@ public class Person implements Serializable {
     private String firstName;
     private String lastName;
     private String gender;
-    private String spouse;
+    private String spouseId;
 
     // Optional data:
-    private String father;
-    private String mother;
+    private String fatherId;
+    private String motherId;
 
     public Person(String descendant, String personID, String firstName, String lastName, String gender, String
             spouse, String father, String mother) {
@@ -29,9 +31,9 @@ public class Person implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
-        this.spouse = spouse;
-        this.father = father;
-        this.mother = mother;
+        this.spouseId = spouse;
+        this.fatherId = father;
+        this.motherId = mother;
 //        Log.d(LOG_TAG, toString());
     }
 
@@ -40,8 +42,8 @@ public class Person implements Serializable {
         "\nPersonID: " + personId +
         "\nName: " + firstName + " " + lastName +
         "\nGender: " + gender +
-        "\nSpouse: " + spouse +
-        "\nFather: " + father + " , Mother: " + mother + "\n");
+        "\nSpouse: " + spouseId +
+        "\nFather: " + fatherId + " , Mother: " + motherId + "\n");
     }
 
     public String getDescendant() {
@@ -68,15 +70,36 @@ public class Person implements Serializable {
         return gender;
     }
 
+    // TODO: find Spouse's name by searching events
     public String getSpouse() {
-        return spouse;
+        String name = null;
+        try {
+            name = LocalData.findPerson(spouseId).getName();
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.toString(), e);
+        }
+        return "Spouse: " + name;
     }
 
+    // TODO: find Father's name by searching events
     public String getFather() {
-        return father;
+        String name = null;
+        try {
+            name = LocalData.findPerson(fatherId).getName();
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.toString(), e);
+        }
+        return "Father: " + name;
     }
 
+    // TODO: find Mother's name by searching events
     public String getMother() {
-        return mother;
+        String name = null;
+        try {
+            name = LocalData.findPerson(motherId).getName();
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.toString(), e);
+        }
+        return "Mother: " + name;
     }
 }

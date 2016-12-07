@@ -5,21 +5,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.example.mgarey2.familymap.R;
+import com.example.mgarey2.familymap.model.Event;
+import com.example.mgarey2.familymap.model.LocalData;
 import com.example.mgarey2.familymap.model.Person;
 import com.example.mgarey2.familymap.ui_tools.ExpandableListAdapater;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class PersonActivity extends AppCompatActivity {
 
+    // TODO: Display an event on the map or person when touched.
+    // Store the people and event objects
+    // so that when a person or event is clicked, it is easier to get to the person/event.
+
     private final String LOG_TAG = "PersonActivity";
-    private Person person = null;
+    private Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +55,12 @@ public class PersonActivity extends AppCompatActivity {
         ArrayList<String> child;
 
         // Events:
+        HashSet<Event> events = LocalData.getPersonEvents(person.getPersonId());
         child = new ArrayList<>();
-        groupItems.add("Events");
-        child.add("Fake Event 1");
-        child.add("Fake Event 2");
+        groupItems.add("Life Events");
+        for (Event event : events) {
+            child.add(event.getEventSummary());
+        }
         childItems.add(child);
 
         // Family:
@@ -67,6 +77,22 @@ public class PersonActivity extends AppCompatActivity {
         ExpandableListAdapter eventsAdapter = new ExpandableListAdapater(this, groupItems, childItems,
                 (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         eventsView.setAdapter(eventsAdapter);
+
+        // Expand by default
+        eventsView.expandGroup(0);
+        eventsView.expandGroup(1);
+
+        // Setup callbacks
+        eventsView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent,
+                                        View v,
+                                        int groupPosition,
+                                        int childPosition, long id) {
+                Log.d(LOG_TAG, "onChildClick");
+                return false;
+            }
+        });
     }
 
     @Override

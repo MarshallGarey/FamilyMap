@@ -28,6 +28,7 @@
     <!-- Person Summary: first name, last name, gender -->
     <TextView
         android:id="@+id/person_first_name"
+        android:paddingBottom="5sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
@@ -35,6 +36,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="5sp"
         android:text="@string/first_name"
         android:textSize="12sp"/>
 
@@ -44,6 +46,7 @@
         android:id="@+id/person_last_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="5sp"
         android:textSize="20sp"/>
 
     <TextView
@@ -58,11 +61,13 @@
         android:id="@+id/person_gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="5sp"
         android:textSize="20sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="5sp"
         android:text="@string/gender"
         android:textSize="12sp"/>
 
@@ -72,7 +77,8 @@
     <ExpandableListView
         android:id="@+id/events_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="5sp">
 
     </ExpandableListView>
 

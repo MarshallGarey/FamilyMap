@@ -70,4 +70,14 @@ public class LocalData {
         Log.w(LOG_TAG, "Unable to find event with id " + eventId);
         return null;
     }
+
+    public static HashSet<Event> getPersonEvents(String personId) {
+        HashSet<Event> result = new HashSet<>();
+        for (Event event : events) {
+            if (event.getPersonId().equals(personId)) {
+                result.add(event);
+            }
+        }
+        return result;
+    }
 }

@@ -19,6 +19,8 @@ import java.util.ArrayList;
  */
 public class ExpandableListAdapater extends BaseExpandableListAdapter {
 
+    // TODO: make childItems store People and Events
+    // TODO: separate eventsView and peopleView expandable lists
     private final String LOG_TAG = "ExpandableListAdapter";
     private ArrayList<String> groupItems, child;
     private ArrayList<Object> childItems;
@@ -86,12 +88,10 @@ public class ExpandableListAdapater extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView,
                              ViewGroup parent) {
         child = (ArrayList<String>) childItems.get(groupPosition);
-
-        TextView view = null;
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.expandable_list_child, null);
         }
-        view = (TextView) convertView.findViewById(R.id.groupTextView);
+        TextView view = (TextView) convertView.findViewById(R.id.groupTextView);
         view.setText(child.get(childPosition));
 //        convertView.setOnClickListener(new View.OnClickListener() {
 //            @Override
