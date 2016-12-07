@@ -3,7 +3,6 @@ package com.example.mgarey2.familymap.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -71,7 +70,7 @@ public class MainActivity
      */
     @Override
     public void onSuccessfulLogin() {
-        unloadLoginFragment();
+        unloadCurrentFragment();
         loadMapFragment();
     }
 
@@ -99,7 +98,7 @@ public class MainActivity
                 R.id.fragment_container, loginFragment).commit();
     }
 
-    private void unloadLoginFragment() {
+    private void unloadCurrentFragment() {
         getSupportFragmentManager().beginTransaction().remove(
                 getSupportFragmentManager().findFragmentById(R.id.fragment_container)).commit();
     }

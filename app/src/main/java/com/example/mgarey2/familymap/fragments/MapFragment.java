@@ -32,8 +32,8 @@ import java.util.HashSet;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonMap.OnMarkerClickListener, View
-        .OnClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonMap.OnMarkerClickListener,
+        View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -158,6 +158,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         amazonMap.setOnMarkerClickListener(this);
 
         // Draw markers; get data from local cache
+        // TODO: if the app is left, events gets thrown out of memory, and upon resume events is null. Find a way to
+        // store events persistently, or re-synchronize.
         HashSet<Event> events = LocalData.getEvents();
         for (Event event : events) {
             LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());

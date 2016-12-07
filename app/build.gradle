@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.mgarey2.familymap"
-        minSdkVersion 19
+        minSdkVersion 22
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"

@@ -19,12 +19,10 @@
     <!-- Strings for Person Activity -->
     <string name="first_name">FIRST NAME</string>
     <string name="last_name">LAST NAME</string>
+    <string name="title_activity_person">Personal Details</string>
 
     <!-- Strings for Map Fragment -->
     <string name="gender">GENDER</string>
     <string name="icon_description">Gender Icon</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="title_activity_person">PersonActivity</string>
 
 </resources>

@@ -16,9 +16,9 @@
         android:text=""
         android:id="@+id/eventDescription"
         android:layout_gravity="center_horizontal|bottom"
-        android:background="#ffffff"
-        android:onClick="onClick"
-        android:clickable="true"/>
+        android:background="#ffffff"/>
+        <!--android:onClick="onClick"-->
+        <!--android:clickable="true"/>-->
 
     <ImageView
         android:layout_width="wrap_content"
