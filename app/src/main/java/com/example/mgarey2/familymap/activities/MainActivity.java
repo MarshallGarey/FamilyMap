@@ -1,7 +1,9 @@
 package com.example.mgarey2.familymap.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.fragments.LoginFragment;
 import com.example.mgarey2.familymap.fragments.MapFragment;
+import com.example.mgarey2.familymap.model.Person;
 
 /**
  * Created by Marshall
@@ -72,9 +75,18 @@ public class MainActivity
         loadMapFragment();
     }
 
+    /**
+     * Map fragment callback.
+     * Start the Person activity.
+     *
+     * @param person The person object to display.
+     */
     @Override
-    public void onMapInteraction() {
-        Log.d(LOG_TAG, "Map Fragment callback");
+    public void onEventSelection(Person person) {
+        Log.d(LOG_TAG, "Map Fragment callback - start Person activity");
+        Intent intent = new Intent(this, PersonActivity.class);
+        intent.putExtra("Person", person);
+        startActivity(intent);
     }
 
     private void loadLoginFragment() {

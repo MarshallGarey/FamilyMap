@@ -16,12 +16,15 @@
         android:text=""
         android:id="@+id/eventDescription"
         android:layout_gravity="center_horizontal|bottom"
-        android:background="#ffffff"/>
+        android:background="#ffffff"
+        android:onClick="onClick"
+        android:clickable="true"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/genderIcon"
-        android:layout_gravity="start|bottom"/>
+        android:layout_gravity="start|bottom"
+        android:contentDescription="@string/icon_description"/>
 
 </FrameLayout>

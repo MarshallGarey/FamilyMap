@@ -58,11 +58,9 @@ public class Event {
         else {
             name = person.getName();
         }
-        String result = "\t\t" + name + "\n\t\t" +
+        return "\t\t" + name + "\n\t\t" +
                 description + ": " + city + ", " + country +
                 " (" + year + ")";
-        Log.d(LOG_TAG, result);
-        return result;
     }
 
     public String getEventId() {

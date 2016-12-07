@@ -13,4 +13,36 @@
     tools:context="com.example.mgarey2.familymap.activities.PersonActivity"
     tools:showIn="@layout/activity_person">
 
+    <LinearLayout
+        android:id="@+id/personSummaryList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--<TextView-->
+                <!--android:id="@+id/firstName"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/first_name"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/lastName"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/last_name"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/Gender"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/gender"/>-->
+        </ListView>
+    </LinearLayout>
 </RelativeLayout>

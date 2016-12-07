@@ -1,10 +1,12 @@
 package com.example.mgarey2.familymap.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Marshall on 12/2/2016.
  * Information about a person.
  */
-public class Person {
+public class Person implements Serializable {
 
     private final String LOG_TAG = "Person";
 

@@ -32,7 +32,8 @@ import java.util.HashSet;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonMap.OnMarkerClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonMap.OnMarkerClickListener, View
+        .OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,7 +49,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     private MapView mapView;
     private TextView textView;
     private ImageView genderIconView;
-    protected static AmazonMap amazonMap = null;
+    private Event selectedEvent = null;
+    private Person selectedPerson;
 
     public MapFragment() {
         // Required empty public constructor
@@ -100,6 +102,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         // Event description view.
         textView = (TextView) view.findViewById(R.id.eventDescription);
         setEventText("Event Description");
+        textView.setOnClickListener(this);
 
         // Gender icon view.
         genderIconView = (ImageView) view.findViewById(R.id.genderIcon);
@@ -116,16 +119,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     private void setGenderIcon(String gender) {
         if (gender.toLowerCase().equals("m")) {
             genderIconView.setImageResource(R.drawable.blue_male_icon);
-        }
-        else {
+        } else {
             genderIconView.setImageResource(R.drawable.pink_female_icon);
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void OnFragmentInteractionListener() {
+    // Called by eventDescription onClick callback.
+    public void OnFragmentInteractionListener(Person person) {
         if (mListener != null) {
-            mListener.onMapInteraction();
+            mListener.onEventSelection(person);
         }
     }
 
@@ -175,16 +177,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     public boolean onMarkerClick(Marker marker) {
         Log.d(LOG_TAG, "onMarkerClick");
         setEventText(marker.getSnippet());
-        Event event = LocalData.findEvent(marker.getTitle());
-        if (event == null) {
+        selectedEvent = LocalData.findEvent(marker.getTitle());
+        if (selectedEvent == null) {
             return false;
         }
-        Person person = LocalData.findPerson(event.getPersonId());
-        if (person == null) {
+        selectedPerson = LocalData.findPerson(selectedEvent.getPersonId());
+        if (selectedPerson == null) {
             return false;
         }
-        setGenderIcon(person.getGender());
+        setGenderIcon(selectedPerson.getGender());
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.d(LOG_TAG, "onClick");
+        // TODO: Load Person Activity if an event has been selected.
+        if (selectedPerson == null) {
+            return; // no event has been selected - do nothing.
+        }
+
+        mListener.onEventSelection(selectedPerson);
     }
 
     /**
@@ -198,8 +211,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onMapInteraction();
+        void onEventSelection(Person person);
     }
 
 
