@@ -94,9 +94,14 @@ public class MainActivity
                 intent.putExtra("Person", person);
                 startActivity(intent);
                 break;
-            // Close current activity
-            case MapFragment.ITEM_BACK:
-                finish();
+            // Start filter activity
+            case MapFragment.ITEM_FILTER:
+                break;
+            // Start search activity
+            case MapFragment.ITEM_SEARCH:
+                break;
+            // Start settings activity
+            case MapFragment.ITEM_SETTINGS:
                 break;
         }
     }

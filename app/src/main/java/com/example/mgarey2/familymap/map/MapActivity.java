@@ -56,7 +56,7 @@ public class MapActivity extends AppCompatActivity implements MapFragment.OnFrag
                 intent.putExtra("Person", person);
                 startActivity(intent);
                 break;
-            // Close current activity
+            // Close Map activity
             case MapFragment.ITEM_BACK:
                 finish();
                 break;

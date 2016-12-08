@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,10 +60,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     private Person selectedPerson;
     private AmazonMap amazonMap;
     private static AmazonMapOptions amazonMapOptions = null;
+    private Menu menu;
 
     // Constants
     public static final int ITEM_PERSON_SELECTED = 0;
     public static final int ITEM_BACK = 1;
+    public static final int ITEM_SEARCH = 2;
+    public static final int ITEM_SETTINGS = 3;
+    public static final int ITEM_FILTER = 4;
     private final float ZOOM_IN = 5.5F;
     public static final int MAP_STATE_REGULAR = 0;
     public static final int MAP_STATE_ZOOMED = 1;
@@ -78,7 +84,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
      * this fragment using the provided parameters.
      *
      * @param mapState Zoomed in or out.
-     * @param event   Selected event
+     * @param event    Selected event
      * @return A new instance of fragment MapFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -123,9 +129,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
             }
 
             // Otherwise (started from main activity), display the settings, filter, and search buttons
+            else {
 
-        }
-        else {
+            }
+        } else {
             Log.e(LOG_TAG, "Unable to find toolbar");
         }
 
@@ -211,7 +218,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         if (mapState.equals(MAP_STATES[MAP_STATE_ZOOMED])) {
             setEventText(selectedEvent.getEventSummary());
             amazonMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-                            selectedEvent.getLatitude(), selectedEvent.getLongitutde()), ZOOM_IN));
+                    selectedEvent.getLatitude(), selectedEvent.getLongitutde()), ZOOM_IN));
         }
 
     }
@@ -271,11 +278,45 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(LOG_TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
+            // Back button
             case android.R.id.home:
                 mListener.onItemSelection(null, ITEM_BACK);
                 return true;
+            // Settings
+            case R.id.action_settings:
+                Log.d(LOG_TAG, "settings clicked");
+                mListener.onItemSelection(null, ITEM_SETTINGS);
+                return true;
+            // Search
+            case R.id.action_search:
+                Log.d(LOG_TAG, "search clicked");
+                mListener.onItemSelection(null, ITEM_SEARCH);
+                break;
+            // Filter
+            case R.id.action_filter:
+                Log.d(LOG_TAG, "filter clicked");
+                mListener.onItemSelection(null, ITEM_FILTER);
+                break;
         }
+        // Unrecognized action
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        super.onCreateOptionsMenu(menu, menuInflater);
+        menuInflater.inflate(R.menu.menu_main, menu);
+        this.menu = menu;
+
+        // Hide the other option buttons if opened from map activity.
+        if (mapState != null) {
+            MenuItem item = menu.findItem(R.id.action_settings);
+            item.setVisible(false);
+            item = menu.findItem(R.id.action_search);
+            item.setVisible(false);
+            item = menu.findItem(R.id.action_filter);
+            item.setVisible(false);
+        }
     }
 
 }
