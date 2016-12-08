@@ -2,8 +2,10 @@ package com.example.mgarey2.familymap.event;
 
 import android.util.Log;
 
+import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.person.Person;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 /**
@@ -11,11 +13,19 @@ import java.util.HashSet;
  * Information about an event in a person's life.
  * All data in JSON is required - there are no optional fields.
  */
-public class Event {
+public class Event implements Serializable {
 
     private final String LOG_TAG = "Event";
     private final static String LOG_TAG_STATIC = "Event";
     protected static HashSet<Event> events;
+
+    private String EVENT_TYPES[] = {
+            "birth", "death", "baptism", "census", "christening"
+    };
+
+    private float EVENT_HUES[] = {
+            30, 100, 170, 240, 310
+    };
 
     private String eventId;
     private String personId;
@@ -140,4 +150,15 @@ public class Event {
         }
         return result;
     }
+
+    public float getMarkerHue() {
+        for (int i = 0; i < EVENT_TYPES.length; ++i) {
+            if (EVENT_TYPES[i].equals(description)) {
+                Log.d(LOG_TAG, "Event: " + getEventSummary() + " , hue: " + EVENT_HUES[i]);
+                return EVENT_HUES[i];
+            }
+        }
+        return 0;
+    }
+
 }

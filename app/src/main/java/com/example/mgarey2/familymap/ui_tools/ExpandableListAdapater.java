@@ -18,8 +18,6 @@ import java.util.ArrayList;
  */
 public class ExpandableListAdapater extends BaseExpandableListAdapter {
 
-    // TODO: make childItems store People and Events (or a different way)
-    // TODO: separate eventsView and peopleView expandable lists
     private final String LOG_TAG = "ExpandableListAdapter";
     private ArrayList<String> groupItems, child;
     private ArrayList<Object> childItems;

@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import com.amazon.geo.mapsv2.AmazonMap;
 import com.amazon.geo.mapsv2.AmazonMapOptions;
+import com.amazon.geo.mapsv2.CameraUpdateFactory;
 import com.amazon.geo.mapsv2.MapView;
 import com.amazon.geo.mapsv2.OnMapReadyCallback;
+import com.amazon.geo.mapsv2.model.BitmapDescriptorFactory;
 import com.amazon.geo.mapsv2.model.LatLng;
 import com.amazon.geo.mapsv2.model.Marker;
 import com.amazon.geo.mapsv2.model.MarkerOptions;
@@ -33,23 +35,33 @@ import java.util.HashSet;
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonMap.OnMarkerClickListener,
         View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private static AmazonMapOptions amazonMapOptions = null;
     protected static final String LOG_TAG = "MapFragment";
 
-    // TODO: Use parameters to determine whether to zoom in on a specific event or be zoomed out.
-    private String mParam1;
-    private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    // Use parameters to determine whether to zoom in on a specific event or be zoomed out.
+    private String mapState;            // param 1
+    private Event selectedEvent = null; // param 2
+    private static final String ARG_PARAM1 = "MAP STATE";
+    private static final String ARG_PARAM2 = "MAP_EVENT";
+
+    // Views
     private MapView mapView;
     private TextView textView;
     private ImageView genderIconView;
-    private Event selectedEvent = null;
+
+    // Other variables
+    private OnFragmentInteractionListener mListener;
     private Person selectedPerson;
+    private AmazonMap amazonMap;
+    private static AmazonMapOptions amazonMapOptions = null;
+
+    // Constants
+    private final float ZOOM_IN = 4.0F;
+    public static final int MAP_STATE_REGULAR = 0;
+    public static final int MAP_STATE_ZOOMED = 1;
+    public static final String[] MAP_STATES = {
+            "regular", "zoomed"
+    };
 
     public MapFragment() {
         // Required empty public constructor
@@ -59,30 +71,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param mapState Zoomed in or out.
+     * @param event   Selected event
      * @return A new instance of fragment MapFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MapFragment newInstance(String param1, String param2) {
+    public static MapFragment newInstance(String mapState, Event event) {
         Log.d(LOG_TAG, "newInstance");
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, mapState);
+        args.putSerializable(ARG_PARAM2, event);
         fragment.setArguments(args);
-
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mapState = getArguments().getString(ARG_PARAM1);
+            selectedEvent = (Event) getArguments().getSerializable(ARG_PARAM2);
         }
     }
 
@@ -150,6 +160,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     @Override
     public void onMapReady(AmazonMap amazonMap) {
 
+        this.amazonMap = amazonMap;
         // TODO: Apply filters
         // TODO: Apply stored settings
 
@@ -157,20 +168,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         amazonMap.setOnMarkerClickListener(this);
 
         // Draw markers; get data from local cache
-        // TODO: if the app is left, events gets thrown out of memory, and upon resume events is null. Find a way to
-        // store events persistently, or re-synchronize.
+        // TODO: if the app exits, events gets thrown out of memory, and upon resume events is null. Find a way to
+        // store events persistently, or re-synchronize, or go back to log-in.
         HashSet<Event> events = Event.getEvents();
         for (Event event : events) {
             LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());
-            amazonMap.addMarker(newMarker(location, event.getEventId(), event.getEventSummary()));
+            amazonMap.addMarker(newMarker(location, event.getEventId(), event.getEventSummary(),
+                    event.getMarkerHue()));
         }
+
+        // Apply zoom if event is selected
+        if (mapState == null) {
+            return;
+        }
+        if (mapState.equals(MAP_STATES[MAP_STATE_ZOOMED])) {
+            setEventText(selectedEvent.getEventSummary());
+            amazonMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                            selectedEvent.getLatitude(), selectedEvent.getLongitutde()), ZOOM_IN));
+        }
+
     }
 
-    private MarkerOptions newMarker(LatLng location, String eventId, String summary) {
+    private MarkerOptions newMarker(LatLng location, String eventId, String summary, float hue) {
         MarkerOptions markerOptions = new MarkerOptions().position(location);
         markerOptions.title(eventId); // Do this so it's easy to find the event later.
         markerOptions.snippet(summary);
-
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(hue));
         return markerOptions;
     }
 
@@ -187,17 +210,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
             return false;
         }
         setGenderIcon(selectedPerson.getGender());
+        amazonMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                selectedEvent.getLatitude(), selectedEvent.getLongitutde()), ZOOM_IN));
+
         return true;
     }
 
     @Override
     public void onClick(View v) {
         Log.d(LOG_TAG, "onClick");
-        // TODO: Load Person Activity if an event has been selected.
         if (selectedPerson == null) {
             return; // no event has been selected - do nothing.
         }
-
+        // Load Person Activity if an event has been selected.
         mListener.onEventSelection(selectedPerson);
     }
 

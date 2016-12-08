@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.event.Event;
+import com.example.mgarey2.familymap.map.MapActivity;
+import com.example.mgarey2.familymap.map.MapFragment;
 import com.example.mgarey2.familymap.ui_tools.ExpandableListAdapater;
 
 import java.util.ArrayList;
@@ -21,8 +23,6 @@ import java.util.HashSet;
 public class PersonActivity extends AppCompatActivity {
 
     // TODO: Display an event on the map or person when touched.
-    // Store the people and event objects
-    // so that when a person or event is clicked, it is easier to get to the person/event.
 
     private final String LOG_TAG = "PersonActivity";
     private Person person;
@@ -89,6 +89,10 @@ public class PersonActivity extends AppCompatActivity {
                 // Event:
                 if (groupPosition == 0) {
                     Log.d(LOG_TAG, personEvents.get(childPosition).toString());
+                    Intent intent = new Intent(context, MapActivity.class);
+                    intent.putExtra(MapActivity.ZOOM_KEY, MapFragment.MAP_STATES[MapFragment.MAP_STATE_ZOOMED]);
+                    intent.putExtra(MapActivity.EVENT_KEY, personEvents.get(childPosition));
+                    startActivity(intent);
                 }
                 // Family member: Start new Person activity for that person.
                 else {

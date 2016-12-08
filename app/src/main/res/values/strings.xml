@@ -27,8 +27,9 @@
     <string name="last_name">LAST NAME</string>
     <string name="title_activity_person">Personal Details</string>
 
-    <!-- Strings for Map Fragment -->
+    <!-- Strings for Map Fragment and Activity -->
     <string name="gender">GENDER</string>
     <string name="icon_description">Gender Icon</string>
+    <string name="zoom_key">ZOOM_KEY</string>
 
 </resources>
