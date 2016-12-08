@@ -1,4 +1,4 @@
-package com.example.mgarey2.familymap.activities;
+package com.example.mgarey2.familymap.person;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +11,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.example.mgarey2.familymap.R;
-import com.example.mgarey2.familymap.model.Event;
-import com.example.mgarey2.familymap.model.LocalData;
-import com.example.mgarey2.familymap.model.Person;
+import com.example.mgarey2.familymap.event.Event;
 import com.example.mgarey2.familymap.ui_tools.ExpandableListAdapater;
 
 import java.util.ArrayList;
@@ -102,7 +100,7 @@ public class PersonActivity extends AppCompatActivity {
     // track of the objects and go to them when clicked on
     private void setEventItems() {
         personEvents = new ArrayList<>();
-        HashSet<Event> events = LocalData.getPersonEvents(person.getPersonId());
+        HashSet<Event> events = Event.getPersonEvents(person.getPersonId());
         ArrayList<String> child = new ArrayList<>();
         groupItems.add("Life Events");
         for (Event event : events) {
@@ -121,15 +119,15 @@ public class PersonActivity extends AppCompatActivity {
         String name;
         if ((name = person.getFatherName()) != null) {
             child.add("Father: " + name);
-            familyMembers.add(LocalData.findPerson(person.getFatherId()));
+            familyMembers.add(Person.findPerson(person.getFatherId()));
         }
         if (person.getMotherName() != null) {
             child.add("Mother: " + person.getMotherName());
-            familyMembers.add(LocalData.findPerson(person.getMotherId()));
+            familyMembers.add(Person.findPerson(person.getMotherId()));
         }
         if ((name = person.getSpouseName()) != null) {
             child.add("Spouse: " + name);
-            familyMembers.add(LocalData.findPerson(person.getSpouseId()));
+            familyMembers.add(Person.findPerson(person.getSpouseId()));
         }
         childItems.add(child);
     }

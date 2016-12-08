@@ -8,9 +8,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.mgarey2.familymap.R;
-import com.example.mgarey2.familymap.fragments.LoginFragment;
-import com.example.mgarey2.familymap.fragments.MapFragment;
-import com.example.mgarey2.familymap.model.Person;
+import com.example.mgarey2.familymap.client.LoginFragment;
+import com.example.mgarey2.familymap.map.MapFragment;
+import com.example.mgarey2.familymap.person.Person;
+import com.example.mgarey2.familymap.person.PersonActivity;
 
 /**
  * Created by Marshall

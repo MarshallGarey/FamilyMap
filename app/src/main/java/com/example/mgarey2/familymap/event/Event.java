@@ -1,8 +1,10 @@
-package com.example.mgarey2.familymap.model;
+package com.example.mgarey2.familymap.event;
 
 import android.util.Log;
 
-import java.security.interfaces.DSAKey;
+import com.example.mgarey2.familymap.person.Person;
+
+import java.util.HashSet;
 
 /**
  * Created by Marshall on 12/2/2016.
@@ -12,6 +14,8 @@ import java.security.interfaces.DSAKey;
 public class Event {
 
     private final String LOG_TAG = "Event";
+    private final static String LOG_TAG_STATIC = "Event";
+    protected static HashSet<Event> events;
 
     private String eventId;
     private String personId;
@@ -51,7 +55,7 @@ public class Event {
 
     public String getEventSummary() {
         String name = null;
-        Person person = LocalData.findPerson(personId);
+        Person person = Person.findPerson(personId);
         if (person == null) {
             Log.w(LOG_TAG, "Unable to find person in getEventSummary");
         }
@@ -97,5 +101,43 @@ public class Event {
 
     public String getDescendant() {
         return descendant;
+    }
+
+    public static void addEvent(Event event) {
+        if (events == null) {
+            events = new HashSet<>();
+        }
+        events.add(event);
+    }
+
+    public static void removeEvent(Event event) {
+        if (events == null) {
+            return;
+        }
+        events.remove(event);
+    }
+
+    public static HashSet<Event> getEvents() {
+        return events;
+    }
+
+    public static Event findEvent(String eventId) {
+        for (Event event : events) {
+            if (event.getEventId().equals(eventId)) {
+                return event;
+            }
+        }
+        Log.w(LOG_TAG_STATIC, "Unable to find event with id " + eventId);
+        return null;
+    }
+
+    public static HashSet<Event> getPersonEvents(String personId) {
+        HashSet<Event> result = new HashSet<>();
+        for (Event event : events) {
+            if (event.getPersonId().equals(personId)) {
+                result.add(event);
+            }
+        }
+        return result;
     }
 }

@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="40sp"
               android:orientation="vertical"
-              tools:context=".activities.PersonActivity">
+              tools:context=".person.PersonActivity">
 
     <TextView
         android:id="@+id/groupTextView"

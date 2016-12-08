@@ -1,8 +1,9 @@
-package com.example.mgarey2.familymap.model;
+package com.example.mgarey2.familymap.person;
 
 import android.util.Log;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Marshall on 12/2/2016.
@@ -11,6 +12,8 @@ import java.io.Serializable;
 public class Person implements Serializable {
 
     private final String LOG_TAG = "Person";
+    private final static String LOG_TAG_STATIC = "Person";
+    protected static ArrayList<Person> people;
 
     // Required data:
     private String descendant;
@@ -76,7 +79,7 @@ public class Person implements Serializable {
         }
         Person spouse = null;
         try {
-            spouse = LocalData.findPerson(spouseId);
+            spouse = Person.findPerson(spouseId);
         } catch (Exception e) {
             Log.e(LOG_TAG, e.toString(), e);
         }
@@ -89,7 +92,7 @@ public class Person implements Serializable {
         }
         Person father = null;
         try {
-            father = LocalData.findPerson(fatherId);
+            father = Person.findPerson(fatherId);
         } catch (Exception e) {
             Log.e(LOG_TAG, e.toString(), e);
         }
@@ -102,7 +105,7 @@ public class Person implements Serializable {
         }
         Person mother = null;
         try {
-            mother = LocalData.findPerson(motherId);
+            mother = Person.findPerson(motherId);
         } catch (Exception e) {
             Log.e(LOG_TAG, e.toString(), e);
         }
@@ -137,5 +140,33 @@ public class Person implements Serializable {
 
     public String getSpouseId() {
         return spouseId;
+    }
+
+    public static void addPerson(Person person) {
+        if (people == null) {
+            people = new ArrayList<>();
+        }
+        people.add(person);
+    }
+
+    public static void removePerson(Person person) {
+        if (people == null) {
+            return;
+        }
+        people.remove(person);
+    }
+
+    public static ArrayList<Person> getPeople() {
+        return people;
+    }
+
+    public static Person findPerson(String personId) {
+        for (Person person : people) {
+            if (person.getPersonId().equals(personId)) {
+                return person;
+            }
+        }
+        Log.w(LOG_TAG_STATIC, "Unable to find person with id " + personId);
+        return null;
     }
 }

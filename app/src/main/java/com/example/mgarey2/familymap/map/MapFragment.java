@@ -1,4 +1,4 @@
-package com.example.mgarey2.familymap.fragments;
+package com.example.mgarey2.familymap.map;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,9 +18,8 @@ import com.amazon.geo.mapsv2.model.LatLng;
 import com.amazon.geo.mapsv2.model.Marker;
 import com.amazon.geo.mapsv2.model.MarkerOptions;
 import com.example.mgarey2.familymap.R;
-import com.example.mgarey2.familymap.model.Event;
-import com.example.mgarey2.familymap.model.LocalData;
-import com.example.mgarey2.familymap.model.Person;
+import com.example.mgarey2.familymap.event.Event;
+import com.example.mgarey2.familymap.person.Person;
 
 import java.util.HashSet;
 
@@ -160,7 +159,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         // Draw markers; get data from local cache
         // TODO: if the app is left, events gets thrown out of memory, and upon resume events is null. Find a way to
         // store events persistently, or re-synchronize.
-        HashSet<Event> events = LocalData.getEvents();
+        HashSet<Event> events = Event.getEvents();
         for (Event event : events) {
             LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());
             amazonMap.addMarker(newMarker(location, event.getEventId(), event.getEventSummary()));
@@ -179,11 +178,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     public boolean onMarkerClick(Marker marker) {
         Log.d(LOG_TAG, "onMarkerClick");
         setEventText(marker.getSnippet());
-        selectedEvent = LocalData.findEvent(marker.getTitle());
+        selectedEvent = Event.findEvent(marker.getTitle());
         if (selectedEvent == null) {
             return false;
         }
-        selectedPerson = LocalData.findPerson(selectedEvent.getPersonId());
+        selectedPerson = Person.findPerson(selectedEvent.getPersonId());
         if (selectedPerson == null) {
             return false;
         }

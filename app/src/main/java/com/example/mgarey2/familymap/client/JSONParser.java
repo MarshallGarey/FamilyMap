@@ -2,9 +2,8 @@ package com.example.mgarey2.familymap.client;
 
 import android.util.Log;
 
-import com.example.mgarey2.familymap.model.Event;
-import com.example.mgarey2.familymap.model.LocalData;
-import com.example.mgarey2.familymap.model.Person;
+import com.example.mgarey2.familymap.event.Event;
+import com.example.mgarey2.familymap.person.Person;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,7 +63,7 @@ public class JSONParser {
                         father,
                         mother
                 );
-                LocalData.addPerson(p);
+                Person.addPerson(p);
             }
             return true;
 
@@ -81,7 +80,7 @@ public class JSONParser {
 
             for (int i = 0; i < list.length(); ++i) {
                 JSONObject element = list.getJSONObject(i);
-                LocalData.addEvent(new Event(
+                Event.addEvent(new Event(
                         element.getString("eventID"),
                         element.getString("personID"),
                         element.getDouble("latitude"),

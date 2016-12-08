@@ -20,7 +20,6 @@ public class Client {
 
     public static void openUrl(String destUrl) {
         try {
-//            urlString = "http://bernoulli.app.byu.edu:8080";
             urlString = destUrl;
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error connecting to server.\n" + e.getMessage(), e);
@@ -45,7 +44,6 @@ public class Client {
             String requestBody = String.format("{username:\"%s\",password:\"%s\"}", username, password);
             Log.d(LOG_TAG, requestBody);
             writer.write(requestBody);
-//            writer.write("{username:\"mgarey2\",password:\"familymap\"}");
             writer.close();
 
             // Get the response

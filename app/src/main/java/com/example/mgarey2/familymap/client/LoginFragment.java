@@ -1,4 +1,4 @@
-package com.example.mgarey2.familymap.fragments;
+package com.example.mgarey2.familymap.client;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -18,7 +18,6 @@ import android.widget.EditText;
 
 import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.activities.MainActivity;
-import com.example.mgarey2.familymap.client.Client;
 
 /**
  * A simple {@link Fragment} subclass.
