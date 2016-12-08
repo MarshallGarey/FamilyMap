@@ -19,6 +19,7 @@ import com.example.mgarey2.familymap.ui_tools.ExpandableListAdapater;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 public class PersonActivity extends AppCompatActivity {
 
@@ -111,7 +112,7 @@ public class PersonActivity extends AppCompatActivity {
     // track of the objects and go to them when clicked on
     private void setEventItems() {
         personEvents = new ArrayList<>();
-        HashSet<Event> events = Event.getPersonEvents(person.getPersonId());
+        TreeSet<Event> events = Event.getPersonEvents(person.getPersonId());
         ArrayList<String> child = new ArrayList<>();
         groupItems.add("Life Events");
         for (Event event : events) {

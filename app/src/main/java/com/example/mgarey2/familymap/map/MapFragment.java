@@ -24,6 +24,7 @@ import com.example.mgarey2.familymap.event.Event;
 import com.example.mgarey2.familymap.person.Person;
 
 import java.util.HashSet;
+import java.util.TreeSet;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,7 +57,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     private static AmazonMapOptions amazonMapOptions = null;
 
     // Constants
-    private final float ZOOM_IN = 4.0F;
+    private final float ZOOM_IN = 5.5F;
     public static final int MAP_STATE_REGULAR = 0;
     public static final int MAP_STATE_ZOOMED = 1;
     public static final String[] MAP_STATES = {
@@ -159,7 +160,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
 
     @Override
     public void onMapReady(AmazonMap amazonMap) {
-
+        Log.d(LOG_TAG, "onMapReady");
         this.amazonMap = amazonMap;
         // TODO: Apply filters
         // TODO: Apply stored settings
@@ -170,7 +171,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         // Draw markers; get data from local cache
         // TODO: if the app exits, events gets thrown out of memory, and upon resume events is null. Find a way to
         // store events persistently, or re-synchronize, or go back to log-in.
-        HashSet<Event> events = Event.getEvents();
+        TreeSet<Event> events = Event.getEvents();
         for (Event event : events) {
             LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());
             amazonMap.addMarker(newMarker(location, event.getEventId(), event.getEventSummary(),
