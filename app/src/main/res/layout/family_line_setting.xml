@@ -9,19 +9,7 @@
         android:gravity="start"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/familyline_text"
-            android:textSize="20sp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/familyline_subtext"
-            android:textSize="14sp"
-            />
+        <include layout="@layout/text_subtext"/>
 
     </LinearLayout>
 
@@ -34,9 +22,8 @@
         android:layout_toStartOf="@+id/toggleButton"
         android:prompt="@string/familyline_color"
         android:entries="@array/color_choices"
-
         />
-        <!--android:gravity="center"-->
+
 
     <ToggleButton
         android:id="@+id/toggleButton"

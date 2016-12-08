@@ -29,7 +29,7 @@
         </activity>
         <activity android:name=".map.MapActivity">
         </activity>
-        <activity android:name=".options.SettingsActivity">
+        <activity android:name=".map.SettingsActivity">
         </activity>
     </application>
 

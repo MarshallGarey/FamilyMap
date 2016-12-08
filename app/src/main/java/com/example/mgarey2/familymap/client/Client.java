@@ -74,6 +74,7 @@ public class Client {
         boolean result = false;
         try {
             URL url = new URL(urlString + "/event");
+            Log.d(LOG_TAG, url.toString());
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
             // Create a request:

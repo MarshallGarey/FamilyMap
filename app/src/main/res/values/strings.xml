@@ -1,5 +1,8 @@
 <resources>
+    <!-- General Strings -->
     <string name="app_name">FamilyMap</string>
+    <string name="text">Sample regular text</string>
+    <string name="subtext">Sample subtext</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
@@ -45,6 +48,13 @@
         <item>Blue</item>
         <item>Green</item>
         <item>Red</item>
+    </string-array>
+    <string name="map_type">Map Type</string>
+    <string-array name="map_choices">
+        <item>Regular</item>
+        <item>Satellite</item>
+        <item>Hybrid</item>
+        <item>Terrain</item>
     </string-array>
 
 </resources>

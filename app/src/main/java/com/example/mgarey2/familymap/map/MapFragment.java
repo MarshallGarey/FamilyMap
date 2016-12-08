@@ -191,6 +191,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         mListener = null;
     }
 
+    /**
+     * Look at options
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (FamilyMapOptions.reSync) {
+            FamilyMapOptions.reSync = false;
+            selectedEvent = null;
+            selectedPerson = null;
+            mapState = null;
+        }
+    }
+
     @Override
     public void onMapReady(AmazonMap amazonMap) {
         Log.d(LOG_TAG, "onMapReady");

@@ -6,12 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".options.SettingsActivity">
+    tools:context=".map.SettingsActivity">
 
     <include layout="@layout/toolbar"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
@@ -19,17 +19,44 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
+        <!-- Family Line options -->
         <include
             android:id="@+id/LifeStoryLines"
             layout="@layout/family_line_setting"/>
+
         <include layout="@layout/horizontal_bar"/>
+
         <include
             android:id="@+id/FamilyTreeLines"
             layout="@layout/family_line_setting"/>
+
         <include layout="@layout/horizontal_bar"/>
+
         <include
             android:id="@+id/SpouseLines"
             layout="@layout/family_line_setting"/>
+
+        <include layout="@layout/horizontal_bar"/>
+
+        <!-- Map type option -->
+        <include
+            android:id="@+id/map_type"
+            layout="@layout/text_option"/>
+
+        <include layout="@layout/horizontal_bar"/>
+
+        <!-- Re-sync data -->
+        <include
+            android:id="@+id/resync_text"
+            layout="@layout/text_subtext"/>
+
+        <include layout="@layout/horizontal_bar"/>
+
+        <!-- Logout -->
+        <include
+            android:id="@+id/logout_text"
+            layout="@layout/text_subtext"/>
+
         <include layout="@layout/horizontal_bar"/>
 
     </LinearLayout>
