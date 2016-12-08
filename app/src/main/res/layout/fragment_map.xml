@@ -11,19 +11,17 @@
     </com.amazon.geo.mapsv2.MapView>
 
     <TextView
+        android:id="@+id/eventDescription"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text=""
-        android:id="@+id/eventDescription"
         android:layout_gravity="center_horizontal|bottom"
-        android:background="#ffffff"/>
-        <!--android:onClick="onClick"-->
-        <!--android:clickable="true"/>-->
+        android:background="#ffffff"
+        android:text=""/>
 
     <ImageView
+        android:id="@+id/genderIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/genderIcon"
         android:layout_gravity="start|bottom"
         android:contentDescription="@string/icon_description"/>
 

@@ -39,11 +39,11 @@ public class Person implements Serializable {
 
     public String toString() {
         return ("Descendant: " + descendant +
-        "\nPersonID: " + personId +
-        "\nName: " + firstName + " " + lastName +
-        "\nGender: " + gender +
-        "\nSpouse: " + spouseId +
-        "\nFather: " + fatherId + " , Mother: " + motherId + "\n");
+                "\nPersonID: " + personId +
+                "\nName: " + firstName + " " + lastName +
+                "\nGender: " + gender +
+                "\nSpouse: " + spouseId +
+                "\nFather: " + fatherId + " , Mother: " + motherId + "\n");
     }
 
     public String getDescendant() {
@@ -70,36 +70,72 @@ public class Person implements Serializable {
         return gender;
     }
 
-    // TODO: find Spouse's name by searching events
-    public String getSpouse() {
-        String name = null;
+    public Person getSpouse() {
+        if (spouseId == null) {
+            return null;
+        }
+        Person spouse = null;
         try {
-            name = LocalData.findPerson(spouseId).getName();
+            spouse = LocalData.findPerson(spouseId);
         } catch (Exception e) {
             Log.e(LOG_TAG, e.toString(), e);
         }
-        return "Spouse: " + name;
+        return spouse;
     }
 
-    // TODO: find Father's name by searching events
-    public String getFather() {
-        String name = null;
+    public Person getFather() {
+        if (fatherId == null) {
+            return null;
+        }
+        Person father = null;
         try {
-            name = LocalData.findPerson(fatherId).getName();
+            father = LocalData.findPerson(fatherId);
         } catch (Exception e) {
             Log.e(LOG_TAG, e.toString(), e);
         }
-        return "Father: " + name;
+        return father;
     }
 
-    // TODO: find Mother's name by searching events
-    public String getMother() {
-        String name = null;
+    public Person getMother() {
+        if (motherId == null) {
+            return null;
+        }
+        Person mother = null;
         try {
-            name = LocalData.findPerson(motherId).getName();
+            mother = LocalData.findPerson(motherId);
         } catch (Exception e) {
             Log.e(LOG_TAG, e.toString(), e);
         }
-        return "Mother: " + name;
+        return mother;
+    }
+
+    // Find Spouse's name by searching events
+    public String getSpouseName() {
+        Person p = getSpouse();
+        return p != null ? p.getName() : null;
+    }
+
+    // Find Father's name by searching events
+    public String getFatherName() {
+        Person p = getFather();
+        return p != null ? p.getName() : null;
+    }
+
+    // Find Mother's name by searching events
+    public String getMotherName() {
+        Person p = getMother();
+        return p != null ? p.getName() : null;
+    }
+
+    public String getFatherId() {
+        return fatherId;
+    }
+
+    public String getMotherId() {
+        return motherId;
+    }
+
+    public String getSpouseId() {
+        return spouseId;
     }
 }

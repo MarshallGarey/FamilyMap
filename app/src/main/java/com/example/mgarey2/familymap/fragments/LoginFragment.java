@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,11 +75,15 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        // Set up the login form.
+        // Set up the login form with default values.
         mUsernameView = (AutoCompleteTextView) view.findViewById(R.id.username);
+        mUsernameView.setText(R.string.default_username);
         mPasswordView = (EditText) view.findViewById(R.id.password);
+        mPasswordView.setText(R.string.default_password);
         mServerHostView = (EditText) view.findViewById(R.id.server_host);
+        mServerHostView.setText(R.string.default_host);
         mServerPortView = (EditText) view.findViewById(R.id.server_port);
+        mServerPortView.setText(R.string.default_port);
 
         Button mSignInButton = (Button) view.findViewById(R.id.sign_in_button);
         mSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -149,42 +152,12 @@ public class LoginFragment extends Fragment {
         String serverHost = mServerHostView.getText().toString();
         String serverPort = mServerPortView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
+        // Show a progress spinner, and kick off a background task to
+        // perform the user login attempt.
+        showProgress(true);
+        mAuthTask = new UserLoginTask(username, password, serverHost, serverPort);
+        mAuthTask.execute((Void) null);
 
-        // Check that the user entered a password.
-        if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid username.
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
-            cancel = true;
-        }
-
-        if (TextUtils.isEmpty(serverHost)) {
-            mServerHostView.setError(getString(R.string.error_invalid_server_host));
-        }
-
-        if (TextUtils.isEmpty(serverPort)) {
-            mServerHostView.setError(getString(R.string.error_invalid_server_port));
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(username, password, serverHost, serverPort);
-            mAuthTask.execute((Void) null);
-        }
     }
 
     /**
@@ -229,12 +202,12 @@ public class LoginFragment extends Fragment {
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private final String mUsername;
         private final String mPassword;
 
         // Constructor
-        UserLoginTask(String email, String password, String serverHost, String serverPort) {
-            mEmail = email;
+        UserLoginTask(String username, String password, String serverHost, String serverPort) {
+            mUsername = username;
             mPassword = password;
 
             // Connect to the Family Map server
@@ -244,7 +217,7 @@ public class LoginFragment extends Fragment {
         @Override
         protected Boolean doInBackground(Void... params) {
             // Attempt authentication against network service.
-            boolean success = Client.login(mEmail, mPassword);
+            boolean success = Client.login(mUsername, mPassword);
             if (!success) {
                 // login failed
                 Log.d(TAG, "Login failed");

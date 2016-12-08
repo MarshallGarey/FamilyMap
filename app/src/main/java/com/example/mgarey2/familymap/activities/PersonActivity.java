@@ -18,7 +18,6 @@ import com.example.mgarey2.familymap.ui_tools.ExpandableListAdapater;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Objects;
 
 public class PersonActivity extends AppCompatActivity {
 
@@ -28,6 +27,12 @@ public class PersonActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "PersonActivity";
     private Person person;
+    private ArrayList<Object> childItems;
+    private ArrayList<String> groupItems;
+
+    // Keep a list of events and family members associated with the person in the same order that they are displayed
+    private ArrayList<Event> personEvents;
+    private ArrayList<Person> familyMembers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,26 +55,14 @@ public class PersonActivity extends AppCompatActivity {
 
         // Prepare data for collapsible lists:
         // 2 groups: events and family
-        ArrayList<String> groupItems = new ArrayList<>();
-        ArrayList<Object> childItems = new ArrayList<>();
-        ArrayList<String> child;
+        groupItems = new ArrayList<>();
+        childItems = new ArrayList<>();
 
         // Events:
-        HashSet<Event> events = LocalData.getPersonEvents(person.getPersonId());
-        child = new ArrayList<>();
-        groupItems.add("Life Events");
-        for (Event event : events) {
-            child.add(event.getEventSummary());
-        }
-        childItems.add(child);
+        setEventItems();
 
         // Family:
-        child = new ArrayList<>();
-        groupItems.add("Family");
-        child.add(person.getFather());
-        child.add(person.getMother());
-        child.add(person.getSpouse());
-        childItems.add(child);
+        setFamilyItems();
 
         // Set events view:
         ExpandableListView eventsView = (ExpandableListView) findViewById(R.id.events_list);
@@ -82,17 +75,63 @@ public class PersonActivity extends AppCompatActivity {
         eventsView.expandGroup(0);
         eventsView.expandGroup(1);
 
-        // Setup callbacks
+        // callbacks
         eventsView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent,
                                         View v,
                                         int groupPosition,
                                         int childPosition, long id) {
-                Log.d(LOG_TAG, "onChildClick");
+                Log.d(LOG_TAG, "onChildClick, groupPosition: " + groupPosition +
+                        " ,childPosition:" + childPosition + " ,id: " + id);
+
+                // Event:
+                if (groupPosition == 0) {
+                    Log.d(LOG_TAG, personEvents.get(childPosition).toString());
+                }
+                // Family member:
+                else {
+                    Log.d(LOG_TAG, familyMembers.get(childPosition).toString());
+                }
                 return false;
             }
         });
+    }
+
+    // TODO: as I add family members to the collapsible list, also add them to a local ArrayList so I can keep
+    // track of the objects and go to them when clicked on
+    private void setEventItems() {
+        personEvents = new ArrayList<>();
+        HashSet<Event> events = LocalData.getPersonEvents(person.getPersonId());
+        ArrayList<String> child = new ArrayList<>();
+        groupItems.add("Life Events");
+        for (Event event : events) {
+            child.add(event.getEventSummary());
+            personEvents.add(event);
+        }
+        childItems.add(child);
+    }
+
+    // TODO: as I add family members to the collapsible list, also add them to a local ArrayList so I can keep
+    // track of the objects and go to them when clicked on
+    private void setFamilyItems() {
+        familyMembers = new ArrayList<>();
+        ArrayList<Object> child = new ArrayList<>();
+        groupItems.add("Family");
+        String name;
+        if ((name = person.getFatherName()) != null) {
+            child.add("Father: " + name);
+            familyMembers.add(LocalData.findPerson(person.getFatherId()));
+        }
+        if (person.getMotherName() != null) {
+            child.add("Mother: " + person.getMotherName());
+            familyMembers.add(LocalData.findPerson(person.getMotherId()));
+        }
+        if ((name = person.getSpouseName()) != null) {
+            child.add("Spouse: " + name);
+            familyMembers.add(LocalData.findPerson(person.getSpouseId()));
+        }
+        childItems.add(child);
     }
 
     @Override

@@ -14,18 +14,14 @@ import java.net.URL;
  */
 public class Client {
 
-    private static URL url = null;
     private static String urlString = null;
     private static AuthorizationData authorizationData = null;
     private static final String LOG_TAG = "HttpClient";
 
     public static void openUrl(String destUrl) {
         try {
-            urlString = "http://bernoulli.app.byu.edu:8080";
-//            urlString = destUrl;
-//            url = new URL(destUrl);
-            // TODO: don't hard code. This is just for testing.
-//            url = new URL("http://bernoulli.app.byu.edu:8080");
+//            urlString = "http://bernoulli.app.byu.edu:8080";
+            urlString = destUrl;
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error connecting to server.\n" + e.getMessage(), e);
         }
@@ -35,6 +31,7 @@ public class Client {
         try {
             // Connect to /user/login
             URL url = new URL(urlString + "/user/login");
+            Log.d(LOG_TAG, url.toString());
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
             // Create a request:
@@ -45,10 +42,10 @@ public class Client {
                     httpURLConnection.getOutputStream());
 
             // Set the request body:
-            // TODO: don't hard code. This is just for testing.
-            String requestBody = String.format("{username:\"%s\",password:\"%s\"", username, password);
-//            writer.write(requestBody);
-            writer.write("{username:\"mgarey2\",password:\"familymap\"}");
+            String requestBody = String.format("{username:\"%s\",password:\"%s\"}", username, password);
+            Log.d(LOG_TAG, requestBody);
+            writer.write(requestBody);
+//            writer.write("{username:\"mgarey2\",password:\"familymap\"}");
             writer.close();
 
             // Get the response
@@ -152,7 +149,7 @@ public class Client {
                 // Read response body bytes
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 byte[] buffer = new byte[10024];
-                int length = 0;
+                int length;
                 while ((length = responseBody.read(buffer)) != -1) {
                     baos.write(buffer, 0, length);
                 }

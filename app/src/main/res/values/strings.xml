@@ -16,6 +16,12 @@
     <string name="error_invalid_server_port">The server port is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
 
+    <!-- Default login credentials -->
+    <string name="default_username">mgarey2</string>
+    <string name="default_password">familymap</string>
+    <string name="default_port">8080</string>
+    <string name="default_host">bernoulli.app.byu.edu</string>
+
     <!-- Strings for Person Activity -->
     <string name="first_name">FIRST NAME</string>
     <string name="last_name">LAST NAME</string>

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mgarey2.familymap.R;
 
@@ -19,7 +18,7 @@ import java.util.ArrayList;
  */
 public class ExpandableListAdapater extends BaseExpandableListAdapter {
 
-    // TODO: make childItems store People and Events
+    // TODO: make childItems store People and Events (or a different way)
     // TODO: separate eventsView and peopleView expandable lists
     private final String LOG_TAG = "ExpandableListAdapter";
     private ArrayList<String> groupItems, child;
@@ -35,10 +34,6 @@ public class ExpandableListAdapater extends BaseExpandableListAdapter {
         this.layoutInflater = layoutInflater;
     }
 
-    public void setLayoutInflater(LayoutInflater layoutInflater) {
-        this.layoutInflater = layoutInflater;
-    }
-
     @Override
     public int getGroupCount() {
         return groupItems.size();
@@ -51,22 +46,22 @@ public class ExpandableListAdapater extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return null;
+        return groupItems.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return null;
+        return childItems.get(childPosition);
     }
 
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupPosition;
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return 0;
+        return childPosition;
     }
 
     @Override
@@ -79,8 +74,8 @@ public class ExpandableListAdapater extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.expandable_list_group, null);
         }
-        ((CheckedTextView)convertView).setText(groupItems.get(groupPosition));
-        ((CheckedTextView)convertView).setChecked(isExpanded);
+        ((CheckedTextView) convertView).setText(groupItems.get(groupPosition));
+        ((CheckedTextView) convertView).setChecked(isExpanded);
         return convertView;
     }
 
