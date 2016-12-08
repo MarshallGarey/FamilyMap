@@ -1,6 +1,7 @@
 package com.example.mgarey2.familymap.person;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class PersonActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "PersonActivity";
     private Person person;
+    private Context context;
     private ArrayList<Object> childItems;
     private ArrayList<String> groupItems;
 
@@ -37,6 +39,7 @@ public class PersonActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
+        context = this;
 
         // Get Person
         person = (Person) getIntent().getSerializableExtra("Person");
@@ -87,9 +90,13 @@ public class PersonActivity extends AppCompatActivity {
                 if (groupPosition == 0) {
                     Log.d(LOG_TAG, personEvents.get(childPosition).toString());
                 }
-                // Family member:
+                // Family member: Start new Person activity for that person.
                 else {
-                    Log.d(LOG_TAG, familyMembers.get(childPosition).toString());
+                    Person p = familyMembers.get(childPosition);
+                    Log.d(LOG_TAG, p.toString());
+                    Intent intent = new Intent(context, PersonActivity.class);
+                    intent.putExtra("Person", p);
+                    startActivity(intent);
                 }
                 return false;
             }

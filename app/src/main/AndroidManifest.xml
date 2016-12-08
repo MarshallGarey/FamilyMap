@@ -27,6 +27,8 @@
             android:name=".person.PersonActivity"
             android:label="@string/title_activity_person">
         </activity>
+        <activity android:name=".map.MapActivity">
+        </activity>
     </application>
 
 </manifest>
