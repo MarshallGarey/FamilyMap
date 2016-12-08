@@ -282,7 +282,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
             case android.R.id.home:
                 mListener.onItemSelection(null, ITEM_BACK);
                 return true;
-            // Settings
+            // SettingsActivity
             case R.id.action_settings:
                 Log.d(LOG_TAG, "settings clicked");
                 mListener.onItemSelection(null, ITEM_SETTINGS);

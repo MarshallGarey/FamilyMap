@@ -3,15 +3,14 @@ package com.example.mgarey2.familymap.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.client.LoginFragment;
 import com.example.mgarey2.familymap.map.MapFragment;
+import com.example.mgarey2.familymap.options.SettingsActivity;
 import com.example.mgarey2.familymap.person.Person;
 import com.example.mgarey2.familymap.person.PersonActivity;
 
@@ -86,11 +85,12 @@ public class MainActivity
     @Override
     public void onItemSelection(Person person, int item) {
 
+        Intent intent;
         switch(item) {
             // Start Person activity
             case MapFragment.ITEM_PERSON_SELECTED:
                 Log.d(LOG_TAG, "Map Fragment callback - start Person activity");
-                Intent intent = new Intent(this, PersonActivity.class);
+                intent = new Intent(this, PersonActivity.class);
                 intent.putExtra("Person", person);
                 startActivity(intent);
                 break;
@@ -102,6 +102,8 @@ public class MainActivity
                 break;
             // Start settings activity
             case MapFragment.ITEM_SETTINGS:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
     }
