@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +31,7 @@ import com.example.mgarey2.familymap.activities.MainActivity;
  */
 public class LoginFragment extends Fragment {
 
-    private final String TAG = "Login Fragment";
+    private final String LOG_TAG = "Login Fragment";
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -70,9 +72,20 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "Begin onCreateView");
+        Log.d(LOG_TAG, "Begin onCreateView");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
+        // Initialize toolbar
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
+            activity.setSupportActionBar(toolbar);
+            activity.getSupportActionBar().setTitle("Login");
+        }
+        else {
+            Log.e(LOG_TAG, "Unable to find toolbar");
+        }
 
         // Set up the login form with default values.
         mUsernameView = (AutoCompleteTextView) view.findViewById(R.id.username);
@@ -88,7 +101,7 @@ public class LoginFragment extends Fragment {
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick");
+                Log.d(LOG_TAG, "onClick");
                 attemptLogin();
             }
         });
@@ -219,12 +232,12 @@ public class LoginFragment extends Fragment {
             boolean success = Client.login(mUsername, mPassword);
             if (!success) {
                 // login failed
-                Log.d(TAG, "Login failed");
+                Log.d(LOG_TAG, "Login failed");
                 return false;
             }
             else {
                 // Login succeeded.
-                Log.d(TAG, "Login successful");
+                Log.d(LOG_TAG, "Login successful");
                 return true;
             }
         }

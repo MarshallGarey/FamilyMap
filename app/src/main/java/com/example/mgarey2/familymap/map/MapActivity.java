@@ -47,10 +47,20 @@ public class MapActivity extends AppCompatActivity implements MapFragment.OnFrag
     }
 
     @Override
-    public void onEventSelection(Person person) {
-        Log.d(LOG_TAG, "Map Fragment callback - start Person activity");
-        Intent intent = new Intent(this, PersonActivity.class);
-        intent.putExtra("Person", person);
-        startActivity(intent);
+    public void onItemSelection(Person person, int item) {
+        switch(item) {
+            // Start Person activity
+            case MapFragment.ITEM_PERSON_SELECTED:
+                Log.d(LOG_TAG, "Map Fragment callback - start Person activity");
+                Intent intent = new Intent(this, PersonActivity.class);
+                intent.putExtra("Person", person);
+                startActivity(intent);
+                break;
+            // Close current activity
+            case MapFragment.ITEM_BACK:
+                finish();
+                break;
+        }
+
     }
 }

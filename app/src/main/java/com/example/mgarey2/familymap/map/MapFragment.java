@@ -3,8 +3,12 @@ package com.example.mgarey2.familymap.map;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,7 +27,6 @@ import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.event.Event;
 import com.example.mgarey2.familymap.person.Person;
 
-import java.util.HashSet;
 import java.util.TreeSet;
 
 /**
@@ -57,6 +60,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     private static AmazonMapOptions amazonMapOptions = null;
 
     // Constants
+    public static final int ITEM_PERSON_SELECTED = 0;
+    public static final int ITEM_BACK = 1;
     private final float ZOOM_IN = 5.5F;
     public static final int MAP_STATE_REGULAR = 0;
     public static final int MAP_STATE_ZOOMED = 1;
@@ -103,6 +108,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+        // Initialize toolbar
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
+            activity.setSupportActionBar(toolbar);
+            ActionBar ab = activity.getSupportActionBar();
+            ab.setTitle("Map");
+            setHasOptionsMenu(true);
+
+            // If zoom in is set (started from map activity), display the up button
+            if (mapState != null) {
+                ab.setDisplayHomeAsUpEnabled(true);
+            }
+
+            // Otherwise (started from main activity), display the settings, filter, and search buttons
+
+        }
+        else {
+            Log.e(LOG_TAG, "Unable to find toolbar");
+        }
+
         // Create the map view.
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -135,9 +161,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     }
 
     // Called by eventDescription onClick callback.
-    public void OnFragmentInteractionListener(Person person) {
+    public void OnFragmentInteractionListener(Person person, int item) {
         if (mListener != null) {
-            mListener.onEventSelection(person);
+            mListener.onItemSelection(person, item);
         }
     }
 
@@ -224,7 +250,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
             return; // no event has been selected - do nothing.
         }
         // Load Person Activity if an event has been selected.
-        mListener.onEventSelection(selectedPerson);
+        mListener.onItemSelection(selectedPerson, ITEM_PERSON_SELECTED);
     }
 
     /**
@@ -238,8 +264,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onEventSelection(Person person);
+        void onItemSelection(Person person, int item);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(LOG_TAG, "onOptionsItemSelected");
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mListener.onItemSelection(null, ITEM_BACK);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

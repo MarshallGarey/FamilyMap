@@ -1,28 +1,35 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".map.MapFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".map.MapFragment">
 
-    <com.amazon.geo.mapsv2.MapView
-        android:id="@+id/map"
+    <include layout="@layout/toolbar"/>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.amazon.geo.mapsv2.MapView>
 
-    <TextView
-        android:id="@+id/eventDescription"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:background="#ffffff"
-        android:text=""/>
+        <com.amazon.geo.mapsv2.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.amazon.geo.mapsv2.MapView>
 
-    <ImageView
-        android:id="@+id/genderIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|bottom"
-        android:contentDescription="@string/icon_description"/>
+        <TextView
+            android:id="@+id/eventDescription"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="#ffffff"
+            android:text=""/>
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/genderIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:contentDescription="@string/icon_description"/>
+    </FrameLayout>
+</LinearLayout>

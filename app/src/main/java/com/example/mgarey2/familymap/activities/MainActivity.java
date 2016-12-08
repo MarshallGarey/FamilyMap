@@ -3,7 +3,9 @@ package com.example.mgarey2.familymap.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -82,11 +84,21 @@ public class MainActivity
      * @param person The person object to display.
      */
     @Override
-    public void onEventSelection(Person person) {
-        Log.d(LOG_TAG, "Map Fragment callback - start Person activity");
-        Intent intent = new Intent(this, PersonActivity.class);
-        intent.putExtra("Person", person);
-        startActivity(intent);
+    public void onItemSelection(Person person, int item) {
+
+        switch(item) {
+            // Start Person activity
+            case MapFragment.ITEM_PERSON_SELECTED:
+                Log.d(LOG_TAG, "Map Fragment callback - start Person activity");
+                Intent intent = new Intent(this, PersonActivity.class);
+                intent.putExtra("Person", person);
+                startActivity(intent);
+                break;
+            // Close current activity
+            case MapFragment.ITEM_BACK:
+                finish();
+                break;
+        }
     }
 
     private void loadLoginFragment() {
@@ -106,7 +118,7 @@ public class MainActivity
 
     private void loadMapFragment() {
         Log.d(LOG_TAG, "Load Map Fragment");
-        // TODO: use the parameters to signify whether to zoom in or out
+        // Use the parameters to signify whether to zoom in or out
         MapFragment mapFragment = MapFragment.newInstance(null, null);
         getSupportFragmentManager().beginTransaction().add(
                 R.id.fragment_container, mapFragment).commit();

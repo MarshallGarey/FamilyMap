@@ -55,7 +55,6 @@ public class PersonActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-
         // Get Person
         person = (Person) getIntent().getSerializableExtra("Person");
         Log.d(LOG_TAG, person.toString());
@@ -185,9 +184,4 @@ public class PersonActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        menu.add(0, 0, 0, R.string.action_settings).setIcon(R.)
-//        return true;
-//    }
 }
