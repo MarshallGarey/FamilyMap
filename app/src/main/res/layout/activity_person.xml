@@ -6,85 +6,83 @@
     android:layout_height="fill_parent"
     android:fillViewport="false"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
 
     tools:context=".person.PersonActivity">
 
-    <!--<Toolbar-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="?attr/actionBarSize"-->
-    <!--android:paddingEnd="0sp"-->
-    <!--android:paddingStart="0sp"-->
-    <!--android:background="#000099"-->
-    <!--android:title="@string/title_activity_person"-->
-    <!--android:titleTextColor="#ffffff">-->
+    <include layout="@layout/toolbar"/>
 
-    <!--</Toolbar>-->
-
-
-    <!-- Person Summary: first name, last name, gender -->
-    <TextView
-        android:id="@+id/person_first_name"
-        android:paddingBottom="5sp"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"/>
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5sp"
-        android:text="@string/first_name"
-        android:textSize="12sp"/>
 
-    <include layout="@layout/horizontal_bar"/>
+        <!-- Person Summary: first name, last name, gender -->
+        <TextView
+            android:id="@+id/person_first_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5sp"
+            android:textSize="20sp"/>
 
-    <TextView
-        android:id="@+id/person_last_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5sp"
-        android:textSize="20sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5sp"
+            android:text="@string/first_name"
+            android:textSize="12sp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/last_name"
-        android:textSize="12sp"/>
+        <include layout="@layout/horizontal_bar"/>
 
-    <include layout="@layout/horizontal_bar"/>
+        <TextView
+            android:id="@+id/person_last_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5sp"
+            android:textSize="20sp"/>
 
-    <TextView
-        android:id="@+id/person_gender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5sp"
-        android:textSize="20sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_name"
+            android:textSize="12sp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5sp"
-        android:text="@string/gender"
-        android:textSize="12sp"/>
+        <include layout="@layout/horizontal_bar"/>
 
-    <include layout="@layout/horizontal_bar"/>
+        <TextView
+            android:id="@+id/person_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5sp"
+            android:textSize="20sp"/>
 
-    <!-- Collapsible Events -->
-    <ExpandableListView
-        android:id="@+id/events_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5sp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5sp"
+            android:text="@string/gender"
+            android:textSize="12sp"/>
 
-    </ExpandableListView>
+        <include layout="@layout/horizontal_bar"/>
 
-    <!--<ExpandableListView-->
+        <!-- Collapsible events and family members lists -->
+        <ExpandableListView
+            android:id="@+id/events_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5sp">
+
+        </ExpandableListView>
+
+        <!--<ExpandableListView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:id="@+id/expandableListView"/>-->
+
+    </LinearLayout>
 
 </LinearLayout>

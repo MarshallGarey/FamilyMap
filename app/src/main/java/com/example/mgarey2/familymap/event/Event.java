@@ -234,27 +234,15 @@ public class Event implements Serializable, Comparable<Event> {
 
         // Compare each field.
         Event e = (Event) other;
-        if (e.eventId.equals(this.eventId)) {
-            if (e.personId.equals(this.personId)) {
-                if (e.latitude == this.latitude) {
-                    if (e.longitutde == this.longitutde) {
-                        if (e.country.toLowerCase().equals(this.country.toLowerCase())) {
-                            if (e.city.toLowerCase().equals(this.city.toLowerCase())) {
-                                if (e.description.toLowerCase().equals(this.description.toLowerCase())) {
-                                    if (e.getYearInt() == this.getYearInt()) {
-                                        if (e.descendant.equals(this.descendant)) {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
+        return e.eventId.equals(this.eventId) &&
+                e.personId.equals(this.personId) &&
+                e.latitude == this.latitude &&
+                e.longitutde == this.longitutde &&
+                e.country.toLowerCase().equals(this.country.toLowerCase()) &&
+                e.city.toLowerCase().equals(this.city.toLowerCase()) &&
+                e.description.toLowerCase().equals(this.description.toLowerCase()) &&
+                e.getYearInt() == this.getYearInt() &&
+                e.descendant.equals(this.descendant);
     }
 
     @Override

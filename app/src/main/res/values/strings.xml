@@ -31,5 +31,6 @@
     <string name="gender">GENDER</string>
     <string name="icon_description">Gender Icon</string>
     <string name="zoom_key">ZOOM_KEY</string>
+    <string name="action_settings">settings_action</string>
 
 </resources>
