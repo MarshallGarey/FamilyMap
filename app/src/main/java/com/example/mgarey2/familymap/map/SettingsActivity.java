@@ -26,7 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "SettingsActivity";
     private final String SPINNER_KEY = "Spinner";
-    private Spinner spinner;
+    private Spinner mapTypeSpinner;
     private Context context;
     private ResyncTask mAuthTask = null;
 
@@ -74,13 +74,13 @@ public class SettingsActivity extends AppCompatActivity {
         subView.setText("BACKGROUND DISPLAY ON MAP");
 
         // Spinner
-        spinner = (Spinner) view.findViewById(R.id.spinner);
-        spinner.setSelection(FamilyMapOptions.mapType-1);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mapTypeSpinner = (Spinner) view.findViewById(R.id.spinner);
+        mapTypeSpinner.setSelection(FamilyMapOptions.mapType-1);
+        mapTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                String item = (String) spinner.getSelectedItem();
+                String item = (String) mapTypeSpinner.getSelectedItem();
 
                 switch (item) {
                     case "Normal":
@@ -141,12 +141,6 @@ public class SettingsActivity extends AppCompatActivity {
                 System.exit(0);
             }
         });
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(SPINNER_KEY, spinner.getSelectedItemPosition());
     }
 
     @Override

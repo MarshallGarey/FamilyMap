@@ -121,7 +121,7 @@ public class PersonActivity extends AppCompatActivity {
         });
     }
 
-    // TODO: as I add family members to the collapsible list, also add them to a local ArrayList so I can keep
+    // As I add events to the collapsible list, also add them to a local ArrayList so I can keep
     // track of the objects and go to them when clicked on
     private void setEventItems() {
         personEvents = new ArrayList<>();
@@ -135,7 +135,7 @@ public class PersonActivity extends AppCompatActivity {
         childItems.add(child);
     }
 
-    // TODO: as I add family members to the collapsible list, also add them to a local ArrayList so I can keep
+    // As I add family members to the collapsible list, also add them to a local ArrayList so I can keep
     // track of the objects and go to them when clicked on
     private void setFamilyItems() {
         familyMembers = new ArrayList<>();

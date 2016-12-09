@@ -9,7 +9,9 @@ import android.widget.Toast;
 
 import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.client.LoginFragment;
+import com.example.mgarey2.familymap.map.FilterActivity;
 import com.example.mgarey2.familymap.map.MapFragment;
+import com.example.mgarey2.familymap.map.SearchActivity;
 import com.example.mgarey2.familymap.map.SettingsActivity;
 import com.example.mgarey2.familymap.person.Person;
 import com.example.mgarey2.familymap.person.PersonActivity;
@@ -96,9 +98,13 @@ public class MainActivity
                 break;
             // Start filter activity
             case MapFragment.ITEM_FILTER:
+                intent = new Intent(this, FilterActivity.class);
+                startActivity(intent);
                 break;
             // Start search activity
             case MapFragment.ITEM_SEARCH:
+                intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
                 break;
             // Start settings activity
             case MapFragment.ITEM_SETTINGS:

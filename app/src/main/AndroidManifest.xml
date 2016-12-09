@@ -31,6 +31,10 @@
         </activity>
         <activity android:name=".map.SettingsActivity">
         </activity>
+        <activity android:name=".map.FilterActivity">
+        </activity>
+        <activity android:name=".map.SearchActivity">
+        </activity>
     </application>
 
 </manifest>
