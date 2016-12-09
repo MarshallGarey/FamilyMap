@@ -294,13 +294,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
 
         if (FamilyMapOptions.lifeStoryLinesActive) {
 
-            Log.i(LOG_TAG, "updateEventLines");
             TreeSet<Event> events = Event.getPersonEvents(selectedPerson.getPersonId());
+            Log.wtf(LOG_TAG, "updateEventLines, num events: " + events.size());
+
             float thickness = BASE_LINE_THICKNESS;
             Event e1 = selectedEvent;
+
             for (Event event : events) {
-                drawLine(event, e1,
-                        FamilyMapOptions.lifeStoryLinesHueIndex,
+                drawLine(e1, event,
+                        FamilyMapOptions.lineColors[FamilyMapOptions.lifeStoryLinesHueIndex],
                         thickness);
                 e1 = event;
             }
