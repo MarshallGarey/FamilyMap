@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amazon.geo.mapsv2.AmazonMap;
-import com.amazon.geo.mapsv2.AmazonMapOptions;
 import com.amazon.geo.mapsv2.CameraUpdateFactory;
 import com.amazon.geo.mapsv2.MapView;
 import com.amazon.geo.mapsv2.OnMapReadyCallback;
@@ -29,6 +28,7 @@ import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.event.Event;
 import com.example.mgarey2.familymap.person.Person;
 
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 /**
@@ -153,7 +153,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     }
 
     private void setEventText(String text) {
-        Log.d(LOG_TAG, "setEventText");
         textView.setText(text);
         textView.setTextSize(18.0F);
     }
@@ -161,8 +160,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     private void setGenderIcon(String gender) {
         if (gender.toLowerCase().equals("m")) {
             genderIconView.setImageResource(R.drawable.blue_male_icon);
-        } else {
+        }
+        else if (gender.toLowerCase().equals("f")) {
             genderIconView.setImageResource(R.drawable.pink_female_icon);
+        }
+        else {
+            genderIconView.setImageResource(android.R.color.transparent);
         }
     }
 
@@ -201,9 +204,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
             selectedEvent = null;
             selectedPerson = null;
             mapState = null;
+            setEventText("");
+            setGenderIcon("");
         }
         if (amazonMap != null) {
-            amazonMap.setMapType(FamilyMapOptions.mapType);
+            updateMap();
         }
     }
 
@@ -211,23 +216,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     public void onMapReady(AmazonMap amazonMap) {
         Log.d(LOG_TAG, "onMapReady");
         this.amazonMap = amazonMap;
-        // TODO: Apply filters
-        // TODO: Apply stored settings
-        Log.d(LOG_TAG, "set map type: " + FamilyMapOptions.mapType);
-        amazonMap.setMapType(FamilyMapOptions.mapType);
 
         // Set callback for clicking on markers.
         amazonMap.setOnMarkerClickListener(this);
 
         // Draw markers; get data from local cache
-        // TODO: if the app exits, events gets thrown out of memory, and upon resume events is null. Find a way to
-        // store events persistently, or re-synchronize, or go back to log-in.
         TreeSet<Event> events = Event.getEvents();
         for (Event event : events) {
-            LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());
-            amazonMap.addMarker(newMarker(location, event.getEventId(), event.getEventSummary(),
-                    event.getMarkerHue()));
+            // Only add the event if it is not filtered out
+            if (!eventFilteredOut(event, Person.findPerson(event.getPersonId()))) {
+                LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());
+                amazonMap.addMarker(newMarker(location, event.getEventId(), event.getEventSummary(),
+                        event.getMarkerHue()));
+            }
         }
+
+        // Set map overlay (normal, satellite, etc)
+        amazonMap.setMapType(FamilyMapOptions.mapType);
 
         // Apply zoom if event is selected
         if (mapState == null) {
@@ -239,6 +244,49 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
                     selectedEvent.getLatitude(), selectedEvent.getLongitutde()), ZOOM_IN));
         }
 
+    }
+
+    private void updateMap() {
+        amazonMap.clear();
+        amazonMap.setMapType(FamilyMapOptions.mapType);
+        TreeSet<Event> events = Event.getEvents();
+        for (Event event : events) {
+            // Only add the event if it is not filtered out
+            // Only add the event if it is not filtered out
+            if (!eventFilteredOut(event, Person.findPerson(event.getPersonId()))) {
+                LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());
+                amazonMap.addMarker(newMarker(location, event.getEventId(), event.getEventSummary(),
+                        event.getMarkerHue()));
+            }
+        }
+
+        // Set map overlay (normal, satellite, etc)
+        amazonMap.setMapType(FamilyMapOptions.mapType);
+
+        // Apply zoom if event is selected
+        if (selectedEvent != null) {
+            setEventText(selectedEvent.getEventSummary());
+            amazonMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                    selectedEvent.getLatitude(), selectedEvent.getLongitutde()), ZOOM_IN));
+        }
+
+    }
+
+    private boolean eventFilteredOut(Event event, Person person) {
+        // Event types that always exist:
+        // fatherside, motherside, male, female
+        // Check for each of these.
+        // The event must match all filters - if any one filter is not found, the event is filtered out (return true).
+        String gender;
+        if (person.getGender().equals("m"))
+            gender = "male";
+        else
+            gender = "female";
+        if (FamilyMapOptions.activeEventFilters.contains(event.getDescription()) &&
+                FamilyMapOptions.activeEventFilters.contains(gender)) {
+            return false;
+        }
+        return true;
     }
 
     private MarkerOptions newMarker(LatLng location, String eventId, String summary, float hue) {

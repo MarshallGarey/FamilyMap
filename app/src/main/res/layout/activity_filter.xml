@@ -18,6 +18,66 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
+        <!-- Event types -->
+        <include
+            android:id="@+id/filter_option1"
+            layout="@layout/filter_option"
+            />
+        <include layout="@layout/horizontal_bar"/>
+
+        <include
+            android:id="@+id/filter_option2"
+            layout="@layout/filter_option"
+            />
+        <include layout="@layout/horizontal_bar"/>
+
+        <include
+            android:id="@+id/filter_option3"
+            layout="@layout/filter_option"
+            />
+        <include layout="@layout/horizontal_bar"/>
+
+        <include
+            android:id="@+id/filter_option4"
+            layout="@layout/filter_option"
+            />
+        <include layout="@layout/horizontal_bar"/>
+
+        <include
+            android:id="@+id/filter_option5"
+            layout="@layout/filter_option"
+            />
+        <include layout="@layout/horizontal_bar"/>
+
+        <include
+            android:id="@+id/filter_option6"
+            layout="@layout/filter_option"
+            />
+        <include layout="@layout/horizontal_bar"/>
+
+        <include
+            android:id="@+id/filter_option7"
+            layout="@layout/filter_option"
+            />
+        <include layout="@layout/horizontal_bar"/>
+
+        <include
+            android:id="@+id/filter_option8"
+            layout="@layout/filter_option"
+            />
+        <include layout="@layout/horizontal_bar"/>
+
+        <include
+            android:id="@+id/filter_option9"
+            layout="@layout/filter_option"
+            />
+        <include layout="@layout/horizontal_bar"/>
+
+        <include
+            android:id="@+id/filter_option10"
+            layout="@layout/filter_option"
+            />
+        <include layout="@layout/horizontal_bar"/>
 
 
     </LinearLayout>

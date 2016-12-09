@@ -154,6 +154,33 @@ public class PersonActivity extends AppCompatActivity {
             child.add("Spouse: " + name);
             familyMembers.add(Person.findPerson(person.getSpouseId()));
         }
+
+        // Find children of this person:
+        String personId = person.getPersonId();
+
+        if (person.getGender().equals("m")) {
+            // Male, so check if person is the father of tempPerson
+            for (Person tempPerson : Person.people) {
+
+                if (personId.equals(tempPerson.getFatherId())) {
+                    // tempPerson
+                    String gender = tempPerson.getGender().equals("m") ? "Son" : "Daughter";
+                    child.add(gender + ": " + tempPerson.getName());
+                    familyMembers.add(Person.findPerson(tempPerson.getPersonId()));
+                }
+            }
+        }
+        else {
+            // Female, so check if person is the mother of tempPerson
+            for (Person tempPerson : Person.people) {
+                if (personId.equals(tempPerson.getMotherId())) {
+                    String gender = tempPerson.getGender().equals("m") ? "Son" : "Daughter";
+                    child.add(gender + ": " + tempPerson.getName());
+                    familyMembers.add(Person.findPerson(tempPerson.getPersonId()));
+                }
+            }
+        }
+
         childItems.add(child);
     }
 

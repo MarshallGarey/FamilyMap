@@ -2,6 +2,8 @@ package com.example.mgarey2.familymap.client;
 
 import android.util.Log;
 
+import com.example.mgarey2.familymap.event.Event;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -72,6 +74,7 @@ public class Client {
 
     public static boolean getEvents() {
         boolean result = false;
+        Event.initEvents();
         try {
             URL url = new URL(urlString + "/event");
             Log.d(LOG_TAG, url.toString());

@@ -2,6 +2,7 @@ package com.example.mgarey2.familymap.event;
 
 import android.util.Log;
 
+import com.example.mgarey2.familymap.map.FamilyMapOptions;
 import com.example.mgarey2.familymap.person.Person;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class Event implements Serializable, Comparable<Event> {
     private final String LOG_TAG = "Event";
     private final static String LOG_TAG_STATIC = "Event";
     protected static TreeSet<Event> events;
+    public static TreeSet<String> eventTypes;
 
     private String EVENT_TYPES[] = {
             "birth", "death", "baptism", "census", "christening"
@@ -52,6 +54,15 @@ public class Event implements Serializable, Comparable<Event> {
         this.description = description;
         this.year = year;
         this.descendant = descendant;
+    }
+
+    public static void initEvents() {
+        eventTypes = new TreeSet<>();
+        eventTypes.add("fatherside");
+        eventTypes.add("motherside");
+        eventTypes.add("male");
+        eventTypes.add("female");
+        FamilyMapOptions.initFilters();
     }
 
     @Override
@@ -121,6 +132,15 @@ public class Event implements Serializable, Comparable<Event> {
             events = new TreeSet<>();
         }
         events.add(event);
+        addEventType(event.description);
+    }
+
+    private static void addEventType(String type) {
+        String str = type.toLowerCase();
+        if (!eventTypes.contains(str)) {
+            eventTypes.add(str);
+            FamilyMapOptions.addFilter(str);
+        }
     }
 
     public static void removeEvent(Event event) {
@@ -178,9 +198,6 @@ public class Event implements Serializable, Comparable<Event> {
      */
     @Override
     public int compareTo(Event e2) {
-//        if (e2 == null) {
-//            return LESS_THAN;
-//        }
 
         // 1. Birth event comes first.
         String e1Description = this.getDescription().toLowerCase();
@@ -249,4 +266,5 @@ public class Event implements Serializable, Comparable<Event> {
     public int hashCode() {
         return getYearInt();
     }
+
 }
