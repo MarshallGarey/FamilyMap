@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +20,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.example.mgarey2.familymap.R;
+import com.example.mgarey2.familymap.activities.MainActivity;
 import com.example.mgarey2.familymap.event.Event;
 import com.example.mgarey2.familymap.map.MapActivity;
 import com.example.mgarey2.familymap.map.MapFragment;
@@ -41,6 +43,7 @@ public class PersonActivity extends AppCompatActivity {
     // Keep a list of events and family members associated with the person in the same order that they are displayed
     private ArrayList<Event> personEvents;
     private ArrayList<Person> familyMembers;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,13 +205,24 @@ public class PersonActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(LOG_TAG, "onOptionsItemSelected");
+        Log.i(LOG_TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_home:
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
 }

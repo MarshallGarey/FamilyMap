@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mgarey2.familymap.R;
+import com.example.mgarey2.familymap.activities.MainActivity;
 import com.example.mgarey2.familymap.event.Event;
 import com.example.mgarey2.familymap.person.Person;
 import com.example.mgarey2.familymap.person.PersonActivity;
@@ -48,17 +49,24 @@ public class MapActivity extends AppCompatActivity implements MapFragment.OnFrag
 
     @Override
     public void onItemSelection(Person person, int item) {
+        Intent intent;
         switch(item) {
             // Start Person activity
             case MapFragment.ITEM_PERSON_SELECTED:
                 Log.d(LOG_TAG, "Map Fragment callback - start Person activity");
-                Intent intent = new Intent(this, PersonActivity.class);
+                intent = new Intent(this, PersonActivity.class);
                 intent.putExtra("Person", person);
                 startActivity(intent);
                 break;
             // Close Map activity
             case MapFragment.ITEM_BACK:
                 finish();
+                break;
+            // Go to home activity (bring to front) and close all other activities
+            case MapFragment.ITEM_HOME:
+                intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
         }
 

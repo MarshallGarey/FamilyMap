@@ -67,6 +67,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     public static final int ITEM_SEARCH = 2;
     public static final int ITEM_SETTINGS = 3;
     public static final int ITEM_FILTER = 4;
+    public static final int ITEM_HOME = 5;
     private final float ZOOM_IN = 5.5F;
     public static final int MAP_STATE_REGULAR = 0;
     public static final int MAP_STATE_ZOOMED = 1;
@@ -122,15 +123,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
             ab.setTitle("Map");
             setHasOptionsMenu(true);
 
-            // If zoom in is set (started from map activity), display the up button
+            // If zoom in is set (started from map activity), display the back button
             if (mapState != null) {
                 ab.setDisplayHomeAsUpEnabled(true);
             }
 
-            // Otherwise (started from main activity), display the settings, filter, and search buttons
-            else {
-
-            }
         } else {
             Log.e(LOG_TAG, "Unable to find toolbar");
         }
@@ -363,6 +360,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
                 Log.d(LOG_TAG, "filter clicked");
                 mListener.onItemSelection(null, ITEM_FILTER);
                 break;
+            // Home
+            case R.id.action_home:
+                Log.d(LOG_TAG, "home clicked");
+                mListener.onItemSelection(null, ITEM_HOME);
+                break;
         }
         // Unrecognized action
         return super.onOptionsItemSelected(item);
@@ -373,14 +375,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.menu_main, menu);
         this.menu = menu;
-
-        // Hide the other option buttons if opened from map activity.
+        MenuItem item;
         if (mapState != null) {
-            MenuItem item = menu.findItem(R.id.action_settings);
+            // Hide the all option buttons except for go to home if opened from map activity.
+            item = menu.findItem(R.id.action_settings);
             item.setVisible(false);
             item = menu.findItem(R.id.action_search);
             item.setVisible(false);
             item = menu.findItem(R.id.action_filter);
+            item.setVisible(false);
+        }
+        else {
+            // Hide go to home button, but no other option buttons
+            item = menu.findItem(R.id.action_home);
             item.setVisible(false);
         }
     }
