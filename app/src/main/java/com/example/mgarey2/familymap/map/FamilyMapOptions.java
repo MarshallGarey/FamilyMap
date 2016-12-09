@@ -1,8 +1,8 @@
 package com.example.mgarey2.familymap.map;
 
+import android.graphics.Color;
+
 import com.amazon.geo.mapsv2.AmazonMap;
-import com.amazon.geo.mapsv2.model.BitmapDescriptorFactory;
-import com.amazon.geo.mapsv2.model.Marker;
 import com.example.mgarey2.familymap.event.Event;
 
 import java.util.TreeSet;
@@ -18,15 +18,15 @@ public class FamilyMapOptions {
     protected static final int BLUE_INDEX = 2;
 
     protected static int lifeStoryLinesHueIndex = RED_INDEX;
-    protected static boolean lifeStoryLinesActive = false;
+    protected static boolean lifeStoryLinesActive = true;
     protected static int familyTreeLinesHueIndex = GREEN_INDEX;
-    protected static boolean familyTreeLinesActive = false;
+    protected static boolean familyTreeLinesActive = true;
     protected static int spouseLinesHueIndex = BLUE_INDEX;
-    protected static boolean spouseLinesActive = false;
-    protected static float[] lineColors = {
-            BitmapDescriptorFactory.HUE_RED, // Red
-            BitmapDescriptorFactory.HUE_GREEN, // Green
-            BitmapDescriptorFactory.HUE_BLUE // Blue
+    protected static boolean spouseLinesActive = true;
+    protected static int[] lineColors = {
+            Color.RED,
+            Color.GREEN,
+            Color.BLUE
     };
 
     protected static int mapType = AmazonMap.MAP_TYPE_NORMAL;

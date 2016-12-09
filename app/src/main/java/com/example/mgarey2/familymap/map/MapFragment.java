@@ -24,6 +24,8 @@ import com.amazon.geo.mapsv2.model.BitmapDescriptorFactory;
 import com.amazon.geo.mapsv2.model.LatLng;
 import com.amazon.geo.mapsv2.model.Marker;
 import com.amazon.geo.mapsv2.model.MarkerOptions;
+import com.amazon.geo.mapsv2.model.Polyline;
+import com.amazon.geo.mapsv2.model.PolylineOptions;
 import com.example.mgarey2.familymap.R;
 import com.example.mgarey2.familymap.event.Event;
 import com.example.mgarey2.familymap.person.Person;
@@ -42,7 +44,8 @@ import java.util.TreeSet;
 public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonMap.OnMarkerClickListener,
         View.OnClickListener {
     protected static final String LOG_TAG = "MapFragment";
-
+    private static final float BASE_LINE_THICKNESS = 11.0f;
+    private static final float LINE_THINNER = 2.0f;
 
     // Use parameters to determine whether to zoom in on a specific event or be zoomed out.
     private String mapState;            // param 1
@@ -74,6 +77,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     public static final String[] MAP_STATES = {
             "regular", "zoomed"
     };
+    private ArrayList<Polyline> polylines;
 
     public MapFragment() {
         // Required empty public constructor
@@ -157,11 +161,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     private void setGenderIcon(String gender) {
         if (gender.toLowerCase().equals("m")) {
             genderIconView.setImageResource(R.drawable.blue_male_icon);
-        }
-        else if (gender.toLowerCase().equals("f")) {
+        } else if (gender.toLowerCase().equals("f")) {
             genderIconView.setImageResource(R.drawable.pink_female_icon);
-        }
-        else {
+        } else {
             genderIconView.setImageResource(android.R.color.transparent);
         }
     }
@@ -218,28 +220,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         amazonMap.setOnMarkerClickListener(this);
 
         // Draw markers; get data from local cache
-        TreeSet<Event> events = Event.getEvents();
-        for (Event event : events) {
-            // Only add the event if it is not filtered out
-            if (!eventFilteredOut(event, Person.findPerson(event.getPersonId()))) {
-                LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());
-                amazonMap.addMarker(newMarker(location, event.getEventId(), event.getEventSummary(),
-                        event.getMarkerHue()));
-            }
-        }
-
-        // Set map overlay (normal, satellite, etc)
-        amazonMap.setMapType(FamilyMapOptions.mapType);
-
-        // Apply zoom if event is selected
-        if (mapState == null) {
-            return;
-        }
-        if (mapState.equals(MAP_STATES[MAP_STATE_ZOOMED])) {
-            setEventText(selectedEvent.getEventSummary());
-            amazonMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-                    selectedEvent.getLatitude(), selectedEvent.getLongitutde()), ZOOM_IN));
-        }
+        updateMap();
+//        TreeSet<Event> events = Event.getEvents();
+//        for (Event event : events) {
+//            // Only add the event if it is not filtered out
+//            if (!eventFilteredOut(event, Person.findPerson(event.getPersonId()))) {
+//                LatLng location = new LatLng(event.getLatitude(), event.getLongitutde());
+//                amazonMap.addMarker(newMarker(location, event.getEventId(), event.getEventSummary(),
+//                        event.getMarkerHue()));
+//            }
+//        }
+//
+//        // Set map overlay (normal, satellite, etc)
+//        amazonMap.setMapType(FamilyMapOptions.mapType);
+//
+//        // Apply zoom if event is selected
+//        if (mapState == null) {
+//            return;
+//        }
+//        if (mapState.equals(MAP_STATES[MAP_STATE_ZOOMED])) {
+//            setEventText(selectedEvent.getEventSummary());
+//            amazonMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+//                    selectedEvent.getLatitude(), selectedEvent.getLongitutde()), ZOOM_IN));
+//
+//        }
 
     }
 
@@ -265,8 +269,109 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
             setEventText(selectedEvent.getEventSummary());
             amazonMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
                     selectedEvent.getLatitude(), selectedEvent.getLongitutde()), ZOOM_IN));
+            updateLines();
         }
+    }
 
+    private void updateLines() {
+        Log.i(LOG_TAG, "updateLines");
+
+        // Remove all previous lines
+        if (polylines != null) {
+            for (Polyline line : polylines) {
+                line.remove();
+            }
+        }
+        polylines = new ArrayList<>();
+
+        // Draw lines where applicable. This is only called when an event is selected.
+        updateFamilyLines(selectedPerson, BASE_LINE_THICKNESS + LINE_THINNER, selectedEvent);
+        updateSpouseLines(selectedPerson, BASE_LINE_THICKNESS + LINE_THINNER, selectedEvent);
+        updateEventLines();
+    }
+
+    private void updateEventLines() {
+
+        if (FamilyMapOptions.lifeStoryLinesActive) {
+
+            Log.i(LOG_TAG, "updateEventLines");
+            TreeSet<Event> events = Event.getPersonEvents(selectedPerson.getPersonId());
+            float thickness = BASE_LINE_THICKNESS;
+            Event e1 = selectedEvent;
+            for (Event event : events) {
+                drawLine(event, e1,
+                        FamilyMapOptions.lifeStoryLinesHueIndex,
+                        thickness);
+                e1 = event;
+            }
+        }
+    }
+
+    private void updateSpouseLines(Person basePerson, float thickness, Event baseEvent) {
+        if (FamilyMapOptions.spouseLinesActive) {
+
+            String spouseId = basePerson.getSpouseId();
+            if (spouseId != null) {
+
+                TreeSet<Event> events = Event.getEvents();
+
+                for (Event event : events) {
+                    if (spouseId.equals(event.getPersonId())) {
+                        drawLine(event, baseEvent,
+                                FamilyMapOptions.lineColors[FamilyMapOptions.spouseLinesHueIndex],
+                                thickness);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private void updateFamilyLines(Person basePerson, float thickness, Event baseEvent) {
+
+        if (FamilyMapOptions.familyTreeLinesActive) {
+
+            String fatherId = basePerson.getFatherId();
+            if (fatherId != null) {
+                Person father = Person.findPerson(fatherId);
+                TreeSet<Event> events = Event.getEvents();
+
+                for (Event event : events) {
+                    if (fatherId.equals(event.getPersonId())) {
+                        drawLine(event, baseEvent,
+                                FamilyMapOptions.lineColors[FamilyMapOptions.familyTreeLinesHueIndex],
+                                thickness);
+                        updateFamilyLines(father, thickness - LINE_THINNER, event);
+                        break; // only draw a line to the first event
+                    }
+                }
+            }
+
+            String motherId = basePerson.getMotherId();
+            if (motherId != null) {
+                Person mother = Person.findPerson(motherId);
+                TreeSet<Event> events = Event.getEvents();
+
+                for (Event event : events) {
+                    if (motherId.equals(event.getPersonId())) {
+                        drawLine(event, baseEvent,
+                                FamilyMapOptions.lineColors[FamilyMapOptions.familyTreeLinesHueIndex],
+                                thickness);
+                        updateFamilyLines(mother, thickness - LINE_THINNER, event);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void drawLine(Event e1, Event e2, int hue, float thickness) {
+        polylines.add(amazonMap.addPolyline(new PolylineOptions().add(
+                new LatLng(e1.getLatitude(), e1.getLongitutde()),
+                new LatLng(e2.getLatitude(), e2.getLongitutde()))
+                .width(thickness)
+                .color(hue)
+        ));
     }
 
     private boolean eventFilteredOut(Event event, Person person) {
@@ -309,7 +414,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         setGenderIcon(selectedPerson.getGender());
         amazonMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
                 selectedEvent.getLatitude(), selectedEvent.getLongitutde()), ZOOM_IN));
-
+        updateLines();
         return true;
     }
 
@@ -384,8 +489,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
             item.setVisible(false);
             item = menu.findItem(R.id.action_filter);
             item.setVisible(false);
-        }
-        else {
+        } else {
             // Hide go to home button, but no other option buttons
             item = menu.findItem(R.id.action_home);
             item.setVisible(false);
