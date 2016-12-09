@@ -1,7 +1,6 @@
 package com.example.mgarey2.familymap.map;
 
-import com.example.mgarey2.familymap.event.Event;
-import com.example.mgarey2.familymap.person.Person;
+import com.amazon.geo.mapsv2.AmazonMap;
 
 /**
  * Created by Marshall on 12/7/2016.
@@ -11,9 +10,6 @@ public class FamilyMapOptions {
     protected static float lifeStoryLinesHue;
     protected static float familyTreeLinesHue;
     protected static float spouseLinesHue;
-    protected enum MAP_TYPE_E {
-        regular, satellite, hybrid, terrain
-    }
-    protected static MAP_TYPE_E mapType = MAP_TYPE_E.regular;
+    protected static int mapType = AmazonMap.MAP_TYPE_NORMAL;
     protected static boolean reSync = false;
 }

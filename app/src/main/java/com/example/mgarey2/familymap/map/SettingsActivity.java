@@ -1,6 +1,9 @@
 package com.example.mgarey2.familymap.map;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,16 +12,21 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazon.geo.mapsv2.AmazonMap;
 import com.example.mgarey2.familymap.R;
+import com.example.mgarey2.familymap.activities.MainActivity;
 import com.example.mgarey2.familymap.client.Client;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "SettingsActivity";
+    private final String SPINNER_KEY = "Spinner";
+    private Spinner spinner;
     private Context context;
     private ResyncTask mAuthTask = null;
 
@@ -65,6 +73,38 @@ public class SettingsActivity extends AppCompatActivity {
         subView = (TextView) view.findViewById(R.id.sub_text);
         subView.setText("BACKGROUND DISPLAY ON MAP");
 
+        // Spinner
+        spinner = (Spinner) view.findViewById(R.id.spinner);
+        spinner.setSelection(FamilyMapOptions.mapType-1);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String item = (String) spinner.getSelectedItem();
+
+                switch (item) {
+                    case "Normal":
+                        FamilyMapOptions.mapType = AmazonMap.MAP_TYPE_NORMAL;
+                        break;
+                    case "Satellite":
+                        FamilyMapOptions.mapType = AmazonMap.MAP_TYPE_SATELLITE;
+                        break;
+                    case "Terrain":
+                        FamilyMapOptions.mapType = AmazonMap.MAP_TYPE_TERRAIN;
+                        break;
+                    default:
+                        FamilyMapOptions.mapType = AmazonMap.MAP_TYPE_HYBRID;
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         // Re-sync data
         view = findViewById(R.id.resync_text);
         subView = (TextView) view.findViewById(R.id.main_text);
@@ -90,10 +130,23 @@ public class SettingsActivity extends AppCompatActivity {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: logout
+                // Logout - kills and restarts the app.
                 Log.d(LOG_TAG, "Logout");
+                Intent mainActivity = new Intent(context, MainActivity.class);
+                int pendingIntentId = 51732; // just random
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, pendingIntentId, mainActivity,
+                        PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 10, pendingIntent);
+                System.exit(0);
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SPINNER_KEY, spinner.getSelectedItemPosition());
     }
 
     @Override
@@ -126,8 +179,7 @@ public class SettingsActivity extends AppCompatActivity {
                 // sync failed
                 Log.d(LOG_TAG, "Login failed");
                 return false;
-            }
-            else {
+            } else {
                 // sync succeeded.
                 Log.d(LOG_TAG, "Login successful");
                 return true;

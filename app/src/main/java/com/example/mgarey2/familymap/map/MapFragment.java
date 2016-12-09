@@ -59,7 +59,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
     private OnFragmentInteractionListener mListener;
     private Person selectedPerson;
     private AmazonMap amazonMap;
-    private static AmazonMapOptions amazonMapOptions = null;
     private Menu menu;
 
     // Constants
@@ -203,6 +202,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
             selectedPerson = null;
             mapState = null;
         }
+        if (amazonMap != null) {
+            amazonMap.setMapType(FamilyMapOptions.mapType);
+        }
     }
 
     @Override
@@ -211,6 +213,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
         this.amazonMap = amazonMap;
         // TODO: Apply filters
         // TODO: Apply stored settings
+        Log.d(LOG_TAG, "set map type: " + FamilyMapOptions.mapType);
+        amazonMap.setMapType(FamilyMapOptions.mapType);
 
         // Set callback for clicking on markers.
         amazonMap.setOnMarkerClickListener(this);
@@ -271,7 +275,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, AmazonM
             return; // no event has been selected - do nothing.
         }
         // Load Person Activity if an event has been selected.
-        mListener.onItemSelection(selectedPerson, ITEM_PERSON_SELECTED);
+        OnFragmentInteractionListener(selectedPerson, ITEM_PERSON_SELECTED);
     }
 
     /**
