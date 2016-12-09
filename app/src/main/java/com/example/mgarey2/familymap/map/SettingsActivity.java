@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.amazon.geo.mapsv2.AmazonMap;
 import com.example.mgarey2.familymap.R;
@@ -50,7 +51,42 @@ public class SettingsActivity extends AppCompatActivity {
         subView.setText("Family Tree Lines");
         subView = (TextView) view.findViewById(R.id.sub_text);
         subView.setText("SHOW TREE LINES");
+        final ToggleButton button = (ToggleButton) view.findViewById(R.id.toggleButton);
+        button.setChecked(FamilyMapOptions.familyTreeLinesActive);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = button.getText().toString();
+                if (str.toLowerCase().equals("off")) {
+                    FamilyMapOptions.familyTreeLinesActive = false;
+                }
+                else {
+                    FamilyMapOptions.familyTreeLinesActive = true;
+                }
+            }
+        });
+        final Spinner familyTreeSpinner = (Spinner) view.findViewById(R.id.spinner);
+        familyTreeSpinner.setSelection(FamilyMapOptions.familyTreeLinesHueIndex);
+        familyTreeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String color = (String) familyTreeSpinner.getSelectedItem();
+                switch (color) {
+                    case "Red":
+                        FamilyMapOptions.familyTreeLinesHueIndex = FamilyMapOptions.RED_INDEX;
+                        break;
+                    case "Green":
+                        FamilyMapOptions.familyTreeLinesHueIndex = FamilyMapOptions.GREEN_INDEX;
+                        break;
+                    default:
+                        FamilyMapOptions.familyTreeLinesHueIndex = FamilyMapOptions.BLUE_INDEX;
+                        break;
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         // Life story lines
         view = findViewById(R.id.LifeStoryLines);
@@ -58,6 +94,42 @@ public class SettingsActivity extends AppCompatActivity {
         subView.setText("Life Story Lines");
         subView = (TextView) view.findViewById(R.id.sub_text);
         subView.setText("SHOW LIFE STORY LINES");
+        final ToggleButton button2 = (ToggleButton) view.findViewById(R.id.toggleButton);
+        button2.setChecked(FamilyMapOptions.lifeStoryLinesActive);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = button2.getText().toString();
+                if (str.toLowerCase().equals("off")) {
+                    FamilyMapOptions.lifeStoryLinesActive = false;
+                }
+                else {
+                    FamilyMapOptions.lifeStoryLinesActive = true;
+                }
+            }
+        });
+        final Spinner lifeLinesSpinner = (Spinner) view.findViewById(R.id.spinner);
+        lifeLinesSpinner.setSelection(FamilyMapOptions.lifeStoryLinesHueIndex);
+        lifeLinesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String color = (String) lifeLinesSpinner.getSelectedItem();
+                switch (color) {
+                    case "Red":
+                        FamilyMapOptions.lifeStoryLinesHueIndex = FamilyMapOptions.RED_INDEX;
+                        break;
+                    case "Green":
+                        FamilyMapOptions.lifeStoryLinesHueIndex = FamilyMapOptions.GREEN_INDEX;
+                        break;
+                    default:
+                        FamilyMapOptions.lifeStoryLinesHueIndex = FamilyMapOptions.BLUE_INDEX;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         // Spouse Lines
         view = findViewById(R.id.SpouseLines);
@@ -65,6 +137,42 @@ public class SettingsActivity extends AppCompatActivity {
         subView.setText("Spouse Lines");
         subView = (TextView) view.findViewById(R.id.sub_text);
         subView.setText("SHOW SPOUSE LINES");
+        final ToggleButton button3 = (ToggleButton) view.findViewById(R.id.toggleButton);
+        button3.setChecked(FamilyMapOptions.spouseLinesActive);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = button3.getText().toString();
+                if (str.toLowerCase().equals("off")) {
+                    FamilyMapOptions.spouseLinesActive = false;
+                }
+                else {
+                    FamilyMapOptions.spouseLinesActive = true;
+                }
+            }
+        });
+        final Spinner spouseLinesSpinner = (Spinner) view.findViewById(R.id.spinner);
+        spouseLinesSpinner.setSelection(FamilyMapOptions.spouseLinesHueIndex);
+        spouseLinesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String color = (String) spouseLinesSpinner.getSelectedItem();
+                switch (color) {
+                    case "Red":
+                        FamilyMapOptions.spouseLinesHueIndex = FamilyMapOptions.RED_INDEX;
+                        break;
+                    case "Green":
+                        FamilyMapOptions.spouseLinesHueIndex = FamilyMapOptions.GREEN_INDEX;
+                        break;
+                    default:
+                        FamilyMapOptions.spouseLinesHueIndex = FamilyMapOptions.BLUE_INDEX;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         // Map type
         view = findViewById(R.id.map_type);

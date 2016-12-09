@@ -21,10 +21,9 @@
         android:layout_gravity="end"
         android:layout_marginTop="18dp"
         android:layout_toStartOf="@+id/toggleButton"
-        android:prompt="@string/familyline_color"
         android:entries="@array/color_choices"
+        android:prompt="@string/familyline_color"
         />
-
 
     <ToggleButton
         android:id="@+id/toggleButton"

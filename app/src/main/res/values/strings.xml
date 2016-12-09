@@ -45,10 +45,13 @@
     <string name="familyline_text">Family line test text</string>
     <string name="familyline_subtext">Family line test subtext</string>
     <string name="familyline_color">Colors</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="blue">Blue</string>
     <string-array name="color_choices">
-        <item>Blue</item>
-        <item>Green</item>
         <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
     </string-array>
     <string name="map_type">Map Type</string>
     <string-array name="map_choices">
